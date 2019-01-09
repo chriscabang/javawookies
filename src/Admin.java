@@ -19,8 +19,7 @@ import javax.swing.*;
 public class Admin extends JFrame implements ActionListener
 {
 	JLabel lblAdmin, lblSettings, lblSearch, lblAddEmployee, lblBack;
-	JLabel lblGapMIDleft, lblGapMIDright, lblGapBottomRight;
-    JTextField tfSearch;
+	JTextField tfSearch;
     JButton btnTimeLogs, btnEdit, btnDeleteEmployee, btnDeleteAll;
     JPanel panelMain, panelTOP, panelSearch, panelUpperRightCorner, panelMID, panelEmpTableButtons, panelButtonLEFT, panelButtonRIGHT, panelBottom;
 	
@@ -71,6 +70,16 @@ public class Admin extends JFrame implements ActionListener
 			public void keyTyped(KeyEvent e)
 			{	if (tfAge.getText().length() >= 3) // limit to 3 characters
 					e.consume();
+			}
+		});
+		tfAge.addFocusListener( new FocusAdapter()
+		{	public void focusLost(FocusEvent e)
+			{	if(tfAge.getText().length()!=0)
+				{	if(Integer.parseInt(tfAge.getText()) != 0)
+						tfAge.setText(String.valueOf(Integer.parseInt(tfAge.getText())));
+					else
+						tfAge.setText("0");
+				}
 			}
 		});
 		
@@ -132,15 +141,17 @@ public class Admin extends JFrame implements ActionListener
 		tfSearch.addMouseListener( new MouseAdapter()
 		{	public void mouseClicked(MouseEvent e)
 			{	if(lblSearch.isEnabled())
-				{	tfSearch.setEnabled(true);
-					tfSearch.setText("");
+				{	table.clearSelection();
+					tfSearch.setEnabled(true);
 					tfSearch.requestFocus();
+					if(tfSearch.getText().equals("Search employee"))
+						tfSearch.setText("");
 				}
 			}
 		});
 		
 /*--- ADD EMPLOYEE ICON ---*/
-		lblAddEmployee = new JLabel("   ");
+		lblAddEmployee = new JLabel("    ");
 		image = logoAddEmployee.getImage();
 		newimg = image.getScaledInstance(25, 25, java.awt.Image.SCALE_SMOOTH);
 		logoAddEmployee = new ImageIcon(newimg);lblAddEmployee.setIcon(logoAddEmployee);
@@ -189,8 +200,12 @@ public class Admin extends JFrame implements ActionListener
 		lblBack.setToolTipText("Logout");
 		lblBack.addMouseListener( new MouseAdapter()
 		{	public void mouseClicked(MouseEvent e)
-			{	if(JOptionPane.showConfirmDialog(null, "Are you sure you want to Logout?", "Logout", JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION)
-				{	Login login = new Login();
+			{	focusMainWindow();
+				
+				if(JOptionPane.showConfirmDialog(null, "Are you sure you want to Logout?", "Logout", JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION)
+				{	close();
+					
+					Login login = new Login();
 					login.pack();
 					login.setLocationRelativeTo(null);
 					login.setResizable(false);
@@ -206,10 +221,9 @@ public class Admin extends JFrame implements ActionListener
 		try
 		{	dbConn = DriverManager.getConnection("jdbc:mysql://localhost:3306/timetracker", "admin", "adminuser");
 			sqlStmnt = dbConn.createStatement();
-			sqlQuery = "SELECT * FROM employees ORDER BY emp_lname ASC";
+			sqlQuery = "SELECT * FROM employees ORDER BY emp_lname ASC, emp_fname ASC, emp_mname ASC, emp_id ASC";
 			sqlRS = sqlStmnt.executeQuery(sqlQuery);
-			if(!(sqlRS.first()))
-				disableButtons();
+						
 			tableModel.setColumnIdentifiers(columnEmployee);
 			table.setAutoResizeMode(JTable.AUTO_RESIZE_ALL_COLUMNS);
 			colModel = table.getColumnModel();
@@ -222,14 +236,53 @@ public class Admin extends JFrame implements ActionListener
 			table.setDefaultEditor(Object.class, null); // making the table uneditable
 			table.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 			while(sqlRS.next())
-			{	record[0] = sqlRS.getString("emp_lname") + ", " + sqlRS.getString("emp_fname") + " " + sqlRS.getString("emp_mname").substring(0, 1) + ".";
-				record[1] = sqlRS.getString("emp_id");
-				record[2] = sqlRS.getString("emp_age");
-				record[3] = sqlRS.getString("emp_gender");
-				record[4] = sqlRS.getString("emp_address");
+			{	if(!(sqlRS.getString("emp_id").equals("0")))
+				{	if(sqlRS.getString("emp_mname").length()!=0)
+					{	if(sqlRS.getString("emp_fname").length()!=0)
+						{	if(sqlRS.getString("emp_lname").length()!=0)
+								record[0] = sqlRS.getString("emp_lname") + ", " + sqlRS.getString("emp_fname") + " " + sqlRS.getString("emp_mname").substring(0, 1) + ".";
+							else
+								record[0] = sqlRS.getString("emp_fname") + " " + sqlRS.getString("emp_mname").substring(0, 1) + ".";
+						}
+						else
+						{	if(sqlRS.getString("emp_lname").length()!=0)
+								record[0] = sqlRS.getString("emp_lname") + ", " + sqlRS.getString("emp_mname").substring(0, 1) + ".";
+							else
+								record[0] = sqlRS.getString("emp_mname").substring(0, 1) + ".";
+						}
+					}
+					else
+					{	if(sqlRS.getString("emp_fname").length()!=0)
+						{	if(sqlRS.getString("emp_lname").length()!=0)
+								record[0] = sqlRS.getString("emp_lname") + ", " + sqlRS.getString("emp_fname");
+							else
+								record[0] = sqlRS.getString("emp_fname");
+						}
+						else
+						{	if(sqlRS.getString("emp_lname").length()!=0)
+								record[0] = sqlRS.getString("emp_lname");
+							else
+								record[0] = "";
+						}
+					}
 				
-				tableModel.addRow(record);				
+					record[1] = sqlRS.getString("emp_id");
+					record[2] = sqlRS.getString("emp_age");
+					record[3] = sqlRS.getString("emp_gender");
+					record[4] = sqlRS.getString("emp_address");
+				
+					tableModel.addRow(record);
+				}	
 			}
+			
+			table.addMouseListener( new MouseAdapter()
+			{	public void mouseClicked(MouseEvent e)
+				{	if(tfSearch.getText().trim().isEmpty())
+					{	tfSearch.setText("Search employee");
+						tfSearch.setEnabled(false);
+					}
+				}
+			});
 		}
 		catch(Exception error){ error.printStackTrace(); return; }
 /*--- TABLE TABLE TABLE ---*/
@@ -351,20 +404,20 @@ public class Admin extends JFrame implements ActionListener
 		btnDeleteAll.setToolTipText("Delete all employees / users");
 	/*--- BUTTON DELETE ALL EMPLOYEE ---*/
 /*--- BUTTONS BUTTONS BUTTONS BUTTONS BUTTONS BUTTONS  BUTTONS BUTTONS BUTTONS  BUTTONS BUTTONS BUTTONS  BUTTONS BUTTONS BUTTONS  BUTTONS BUTTONS BUTTONS ---*/
-
-
-
-
 		
+		try
+		{	sqlQuery = "SELECT * FROM employees";
+			sqlRS = sqlStmnt.executeQuery(sqlQuery);
+			sqlRS.last();
+			if(sqlRS.getString("emp_id").equals("0"))
+				disableButtons();
+		}
+		catch(Exception error){ error.printStackTrace(); return; }
+
 		panelMain = new JPanel(); panelMain.setLayout(new BorderLayout(1,1)); panelMain.setBackground(Color.lightGray);
 		panelMain.addMouseListener( new MouseAdapter()
 		{	public void mouseClicked(MouseEvent e)
-			{	if(tfSearch.getText().trim().isEmpty())
-				{	tfSearch.setText("Search employee");
-					tfSearch.setEnabled(false);
-					panelMain.requestFocusInWindow();			
-				}
-			}
+			{	focusMainWindow();	}
 		});	
 		panelTOP = new JPanel(); panelTOP.setLayout(new BorderLayout(1,1)); panelTOP.setBackground(Color.lightGray);
 		panelTOP.setBorder(BorderFactory.createEtchedBorder(1));
@@ -388,18 +441,15 @@ public class Admin extends JFrame implements ActionListener
 		panelSearch.add(BorderLayout.CENTER, tfSearch);
 		panelSearch.add(BorderLayout.EAST, lblSearch);
 		
-		lblGapMIDleft = new JLabel("                              ");
-		lblGapMIDright = new JLabel("                              ");
-		panelMID.add(BorderLayout.WEST, lblGapMIDleft);
+		panelMID.add(BorderLayout.WEST, new JLabel("                              "));
 		panelMID.add(BorderLayout.CENTER, panelSearch);
-		panelMID.add(BorderLayout.EAST, lblGapMIDright);
+		panelMID.add(BorderLayout.EAST, new JLabel("                              "));
 		
 		panelButtonLEFT.add(BorderLayout.WEST, btnTimeLogs);
 		panelButtonLEFT.add(BorderLayout.CENTER, btnEdit);
 		panelButtonLEFT.add(BorderLayout.EAST, btnDeleteEmployee);
 		
-		lblGapBottomRight = new JLabel("                                                             ");
-		panelButtonRIGHT.add(BorderLayout.WEST, lblGapBottomRight);
+		panelButtonRIGHT.add(BorderLayout.WEST, new JLabel("                                                             "));
 		//panelButtonRIGHT.add(BorderLayout.CENTER, ); // --> if you need to add another button bottom right hand corner
 		panelButtonRIGHT.add(BorderLayout.EAST, btnDeleteAll);
 		
@@ -420,10 +470,44 @@ public class Admin extends JFrame implements ActionListener
 		this.addWindowListener
 		(	new WindowAdapter() 
 			{	public void windowClosing(WindowEvent e)
-				{	System.exit(0);		}
+				{	close(); System.exit(0);	}
 			}
 		);
     }
+	
+	public void close()
+	{
+		if (sqlRS != null)
+		{	try
+			{	sqlRS.close();	} 
+			catch (SQLException e) {}
+        }
+        if (sqlStmnt != null)
+		{	try
+			{	sqlStmnt.close();	} 
+			catch (SQLException e) {}
+        }
+		if (ps != null)
+		{	try
+			{	ps.close();	} 
+			catch (SQLException e) {}
+        }
+		if (dbConn != null)
+		{	try
+			{	dbConn.close();	} 
+			catch (SQLException e) {}
+        }
+	}
+	
+	public void focusMainWindow()
+	{
+		if(tfSearch.getText().trim().isEmpty())
+		{	tfSearch.setText("Search employee");
+			tfSearch.setEnabled(false);
+		}
+		table.clearSelection();
+		panelMain.requestFocusInWindow();
+	}
 	
 	public void disableButtons()
 	{	btnTimeLogs.setEnabled(false);
@@ -438,39 +522,57 @@ public class Admin extends JFrame implements ActionListener
         
 		if(source == btnDeleteAll)
 		{	if(btnDeleteAll.isEnabled())
-			{	if(JOptionPane.showConfirmDialog(null, "Are you sure you want to delete all Employees?", "Delete All Employees", JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION)
+			{	if(JOptionPane.showConfirmDialog(null, "Are you sure you want to delete all employees and their corresponding time logs?", "DELETE ALL EMPLOYEES", JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION)
 				{	DefaultTableModel model = (DefaultTableModel) table.getModel();
 					while( model.getRowCount() > 0 )
 						model.removeRow(0);
 					disableButtons();
+					
+					sqlQuery = "DELETE FROM employees WHERE emp_id != 0";
+					try
+					{	ps = dbConn.prepareStatement(sqlQuery);
+						ps.executeUpdate();
+					}
+					catch(Exception error){ error.printStackTrace(); return; }
+					
+					sqlQuery = "DELETE FROM timelogs";
+					try
+					{	ps = dbConn.prepareStatement(sqlQuery);
+						if(ps != null)
+							ps.executeUpdate();
+						JOptionPane.showMessageDialog(null, "All employees were successfully deleted!");
+					}
+					catch(Exception error){ error.printStackTrace(); return; }
 				}
 			}
 		}
 		else if(source == btnClearAll)
 			eraseAll();
 		else if(source == btnDeleteEmployee)
-		{
-			if(table.getSelectedRow()!=-1)
-			{
-				if(JOptionPane.showConfirmDialog(null, "Are you sure you want to delete this employee?", "", JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION)
-				{	
-					/*
-					sqlQuery = "DELETE FROM timelogs WHERE emp_id = ? AND date_in = ? AND time_in = ?";
+		{	if(table.getSelectedRow()!=-1)
+			{	if(JOptionPane.showConfirmDialog(null, "Are you sure you want to delete this employee and his/her time logs?", "DELETE SELECTED EMPLOYEE", JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION)
+				{	sqlQuery = "DELETE FROM employees WHERE emp_id = ?";
 					try
 					{	ps = dbConn.prepareStatement(sqlQuery);
-						ps.setString(1, idnum);
-						ps.setDate(2, java.sql.Date.valueOf(sqldateFormat.format(dateFormat.parse(tableLogtime.getValueAt(tableLogtime.getSelectedRow(), 1).toString()))));
-						ps.setTime(3, new Time(sqltimeFormat.parse(sqltimeFormat.format(timeFormat.parse(tableLogtime.getValueAt(tableLogtime.getSelectedRow(), 2).toString()))).getTime()));
+						ps.setString(1, (table.getValueAt(table.getSelectedRow(), 1).toString()));
 						ps.executeUpdate();
 					}
 					catch(Exception error){ error.printStackTrace(); return; }
-					*/
-			
+					
+					sqlQuery = "DELETE FROM timelogs WHERE emp_id = ?";
+					try
+					{	ps = dbConn.prepareStatement(sqlQuery);
+						if(ps != null)
+						{	ps.setString(1, (table.getValueAt(table.getSelectedRow(), 1).toString()));
+							ps.executeUpdate();
+						}
+					}
+					catch(Exception error){ error.printStackTrace(); return; }
+					
 					tableModel.removeRow(table.getSelectedRow());
 					panelMain.requestFocusInWindow();
 					if(table.getRowCount()==0)
 						disableButtons();
-				
 					JOptionPane.showMessageDialog(null, "Employee successfully deleted!");
 				}
 			}
@@ -498,14 +600,35 @@ public class Admin extends JFrame implements ActionListener
 		JPanel panelFullnameAGA, panelVerifyPasscode, panelIDPasscodeGap, panelSeparatorLEFTRIGHT, panelSeparatorUPDOWN, panelFullnameSeparatorAGA, panelAgeGender;
 		JPanel panelButtonClear;
 		
+		focusMainWindow();
+		
 		btnClearAll = new JButton("Clear All");btnClearAll.addActionListener(this);
-		lblEmpIDtext = new JLabel("100");lblEmpIDtext.setForeground(new Color(142, 47, 53));
+		lblEmpIDtext = new JLabel("1");lblEmpIDtext.setForeground(new Color(142, 47, 53));
+		try
+		{	sqlQuery = "SELECT * FROM employees ORDER BY emp_id ASC";
+			sqlRS = sqlStmnt.executeQuery(sqlQuery);
+			
+			if (sqlRS != null)
+			{	int x = 0;
+				while(sqlRS.next())
+				{
+					if(Integer.parseInt(sqlRS.getString("emp_id")) > x)
+						x = Integer.parseInt(sqlRS.getString("emp_id"));
+				}
+				lblEmpIDtext.setText(String.valueOf(x + 1));
+			}
+		}
+		catch(Exception error){ error.printStackTrace(); return; }
 		
 		panelAddEmployee = new JPanel(); panelAddEmployee.setLayout(new BorderLayout(1,1)); panelAddEmployee.setBackground(Color.lightGray);
 		panelAddEmployee.addMouseListener( new MouseAdapter()
 		{	public void mouseClicked(MouseEvent e)
 			{	if(tfAge.getText().length()!=0)
-					tfAge.setText(String.valueOf(Integer.parseInt(tfAge.getText())));
+				{	if(Integer.parseInt(tfAge.getText()) != 0)
+						tfAge.setText(String.valueOf(Integer.parseInt(tfAge.getText())));
+					else
+						tfAge.setText("0");
+				}
 			}
 		});
 		
@@ -609,7 +732,7 @@ public class Admin extends JFrame implements ActionListener
 				
 		Object[] selectOptions = {"ADD", "CANCEL"};
 		
-		if(JOptionPane.showOptionDialog(null, panelAddEmployee, "Enter Employee Details", JOptionPane.YES_NO_OPTION, JOptionPane.PLAIN_MESSAGE, null, selectOptions, selectOptions[0]) == 0)
+		if(JOptionPane.showOptionDialog(null, panelAddEmployee, "ENTER EMPLOYEE DETAILS", JOptionPane.YES_NO_OPTION, JOptionPane.PLAIN_MESSAGE, null, selectOptions, selectOptions[0]) == 0)
 		{	if(JOptionPane.showConfirmDialog(null, "Are all entries correct?", "", JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION)
 			{	if ((Arrays.equals(pfPasscode.getPassword(), pfVerifyPasscode.getPassword())) && (pfPasscode.getPassword().length != 0))
 				{	if(tfMname.getText().length()!=0)
@@ -642,11 +765,11 @@ public class Admin extends JFrame implements ActionListener
 					}
 					
 					record[1] = lblEmpIDtext.getText();
-					record[2] = "";
+					record[2] = "0";
 					if(tfAge.getText().length()!=0)
 					{	record[2] = String.valueOf(Integer.parseInt(tfAge.getText()));
 						if(Integer.parseInt(tfAge.getText()) == 0)
-							record[2] = "";
+							record[2] = "0";
 					}
 					record[3] = (String) cbGender.getSelectedItem();
 					if((String) cbGender.getSelectedItem() == "-Select-")
@@ -662,25 +785,32 @@ public class Admin extends JFrame implements ActionListener
 					lblSearch.setEnabled(true);
 										
 					/*--- ADD to database ---*/
-					/*
-					sqlQuery = "INSERT INTO timelogs (emp_id, date_in, time_in, date_out, time_out) VALUES (?, ?, ?, '0000-00-00', '00:00:00.000000')";
+					sqlQuery = "INSERT INTO employees(emp_id, passcode, emp_fname, emp_mname, emp_lname, emp_age, emp_gender, emp_address) VALUES (?,?,?,?,?,?,?,?)";
 					try
 					{	ps = dbConn.prepareStatement(sqlQuery);
-						ps.setString(1, idnum);
-						ps.setDate(2, java.sql.Date.valueOf(stampDate));
-						ps.setTime(3, new Time(sqltimeFormat.parse(stampTime).getTime()));
+						ps.setString(1, record[1]);
+						ps.setString(2, new String(pfVerifyPasscode.getPassword()));
+						ps.setString(3, tfFname.getText());
+						ps.setString(4, tfMname.getText());
+						ps.setString(5, tfLname.getText());
+						ps.setInt(6, Integer.parseInt(record[2]));
+						ps.setString(7, record[3]);
+						ps.setString(8, record[4]);
 						ps.executeUpdate();
 				
 						JOptionPane.showMessageDialog(null, "New Employee successfully added!");
 					}
 					catch(Exception error){ error.printStackTrace(); return; }
-					*/
 					/*--- ADD to database ---*/
 				} 
 				else
 				{	lblVerify.setText("Passcode not verified  "); lblVerify.setForeground(Color.RED);
 					if(tfAge.getText().length()!=0)
+					{
 						tfAge.setText(String.valueOf(Integer.parseInt(tfAge.getText())));
+						if(Integer.parseInt(tfAge.getText()) == 0)
+							tfAge.setText("0");
+					}
 					Addemp();
 				}
 			}
@@ -689,15 +819,15 @@ public class Admin extends JFrame implements ActionListener
 				if(tfAge.getText().length()!=0)
 				{	tfAge.setText(String.valueOf(Integer.parseInt(tfAge.getText())));
 					if(Integer.parseInt(tfAge.getText()) == 0)
-						tfAge.setText("");
+						tfAge.setText("0");
 				}
 				Addemp();
 			}
 		}
 		eraseAll();
 	}
-
-    public static void main(String[] args)
+	
+	public static void main(String[] args)
 	{	Admin frame = new Admin();
 		
 		frame.pack();
