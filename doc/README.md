@@ -36,8 +36,9 @@ JavaWookies started development of the Time Tracking System on December 15, 2018
 
 # About JavaWookies
 Our team consists of:
+
 Member | Username | Email
-:--- | :----: | ---:
+:--- | :--- | :---
 Benjie Fuentes | benjiefuentes | benjie.fuentes@hotmail.com
 JM Hortillosa | jmhort | jm.hortillosa@yahoo.com
 Loebel Busis | bellabelle | bellabelle0309@gmail.com
