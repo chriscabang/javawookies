@@ -1,16 +1,11 @@
-//import java.util.Date;
 import java.text.SimpleDateFormat;
-
 import com.mysql.cj.jdbc.exceptions.*;
 import java.sql.*;
 import java.awt.Font;
 import java.awt.Cursor;
 import java.awt.Dimension;
 import javax.swing.table.DefaultTableModel;
-import javax.swing.JTable; 
 import java.awt.Image;
-import javax.swing.BorderFactory;
-
 import java.awt.Color;
 import java.awt.BorderLayout;
 import java.awt.event.*;
@@ -26,8 +21,9 @@ public class AdminEmpDetails extends JFrame implements ActionListener
 	DefaultTableModel tableModelComputer = new DefaultTableModel(), tableModelTimeLogs = new DefaultTableModel();
 	JTable tableComputer = new JTable(tableModelComputer), tableTimeLogs = new JTable(tableModelTimeLogs);
 	String[] columnComputerDetails = {"Computer Name", "Login Date", "Login Time"}, rcrd = new String[3], columnTimeLogs = {"Date In", "Time In", "Date Out", "Time Out"}, recordTimeLogs = new String[4];
-	String sqlIDnum, sqlName, sqlAge, sqlGender, sqlAddress;
-		
+	String sqlName;
+	int count = 0; // -> use to determine if RS is empty or not
+			
 	ImageIcon logoHeader = new ImageIcon("img/Employee Details header.png"), logoPhoto = new ImageIcon("img/photo frame.png"), logoLoginDetails = new ImageIcon("img/Login Details.png");
 	ImageIcon logoFacebook = new ImageIcon("img/social facebook.png"), logoInstagram = new ImageIcon("img/social instagram.png"), logoTwitter = new ImageIcon("img/social twitter.png");
 	ImageIcon logoPinterest = new ImageIcon("img/social pinterest.png"), logoLinkedin = new ImageIcon("img/social linkedin.png"), logoTimeLogsHeader = new ImageIcon("img/time logs header.png");
@@ -132,7 +128,7 @@ public class AdminEmpDetails extends JFrame implements ActionListener
 		lblBack.addMouseListener( new MouseAdapter()
 		{	public void mouseClicked(MouseEvent e)
 			{	tableComputer.clearSelection(); tableTimeLogs.clearSelection(); panelMAIN.requestFocusInWindow();
-				
+				close();
 				Admin adm = new Admin();
 				adm.pack();
 				adm.setLocationRelativeTo(null);
@@ -220,7 +216,7 @@ public class AdminEmpDetails extends JFrame implements ActionListener
 			sqlRS = sqlStmnt.executeQuery(sqlQuery);
 			
 			while(sqlRS.next())
-			{
+			{	count = 1;
 				/*--- TABLE: LOGIN DETAILS ---*/
 				rcrd[0] = sqlRS.getString("computer_name");
 				rcrd[1] = dateFormat.format(sqlRS.getDate("date_in"));
@@ -253,51 +249,60 @@ public class AdminEmpDetails extends JFrame implements ActionListener
 		
 		tableTimeLogs.setPreferredScrollableViewportSize(new Dimension(330, 60));
 		tableTimeLogs.setFillsViewportHeight(true);
-		//nmbr
 		
-		
-		
-		
-		
-		
-		
-		
-		
-		sqlIDnum = nmbr;
 		panelPhotoID.add(BorderLayout.NORTH, panelPhoto);
-        panelPhotoID.add(BorderLayout.CENTER, new JLabel("                                                ID #:  " + sqlIDnum));
+        panelPhotoID.add(BorderLayout.CENTER, new JLabel("                                                ID #:  " + nmbr));
 		panelPhotoID.add(BorderLayout.SOUTH, new JLabel(" "));
 		
-		//sqlName
-		//sqlAge
-		//sqlGender
-		panelNameAgeGend.add(BorderLayout.NORTH, new JLabel("  Name:  " + sqlName));
-        panelNameAgeGend.add(BorderLayout.CENTER, new JLabel("  Age:  " + sqlAge));
-        panelNameAgeGend.add(BorderLayout.SOUTH, new JLabel("  Gender:  " + sqlGender));
+		try
+		{	sqlQuery = "SELECT * FROM employees WHERE emp_id = '" + nmbr + "'";
+			sqlRS = sqlStmnt.executeQuery(sqlQuery);
+			sqlRS.first();
+			
+			if(sqlRS.getString("emp_mname").length()!=0)
+			{	if(sqlRS.getString("emp_fname").length()!=0)
+				{	if(sqlRS.getString("emp_lname").length()!=0)
+						sqlName = sqlRS.getString("emp_lname") + ", " + sqlRS.getString("emp_fname") + " " + sqlRS.getString("emp_mname").substring(0, 1) + ".";
+					else
+						sqlName = sqlRS.getString("emp_fname") + " " + sqlRS.getString("emp_mname").substring(0, 1) + ".";
+				}
+				else
+				{	if(sqlRS.getString("emp_lname").length()!=0)
+						sqlName = sqlRS.getString("emp_lname") + ", " + sqlRS.getString("emp_mname").substring(0, 1) + ".";
+					else
+						sqlName = sqlRS.getString("emp_mname").substring(0, 1) + ".";
+				}
+			}
+			else
+			{	if(sqlRS.getString("emp_fname").length()!=0)
+				{	if(sqlRS.getString("emp_lname").length()!=0)
+						sqlName = sqlRS.getString("emp_lname") + ", " + sqlRS.getString("emp_fname");
+					else
+						sqlName = sqlRS.getString("emp_fname");
+				}
+				else
+				{	if(sqlRS.getString("emp_lname").length()!=0)
+						sqlName = sqlRS.getString("emp_lname");
+					else
+						sqlName = "";
+				}
+			}
+			
+			panelNameAgeGend.add(BorderLayout.NORTH, new JLabel("  Name:  " + sqlName));
+			panelNameAgeGend.add(BorderLayout.CENTER, new JLabel("  Age:  " + sqlRS.getString("emp_age")));
+			panelNameAgeGend.add(BorderLayout.SOUTH, new JLabel("  Gender:  " + sqlRS.getString("emp_gender")));
 		
-		panelSeparator.add(BorderLayout.WEST, new JLabel("    "));
-        panelSeparator.add(BorderLayout.CENTER, new JSeparator());
-        panelSeparator.add(BorderLayout.EAST, new JLabel("    "));
+			panelSeparator.add(BorderLayout.WEST, new JLabel("    "));
+			panelSeparator.add(BorderLayout.CENTER, new JSeparator());
+			panelSeparator.add(BorderLayout.EAST, new JLabel("    "));
 		
-		//sqlAddress
-		panelAddress.add(BorderLayout.NORTH, new JLabel("  Address:  " + sqlAddress));
-        panelAddress.add(BorderLayout.CENTER, new JLabel(" "));
-        panelAddress.add(BorderLayout.SOUTH, panelSeparator);
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
+			panelAddress.add(BorderLayout.NORTH, new JLabel("  Address:  " + sqlRS.getString("emp_address")));
+			panelAddress.add(BorderLayout.CENTER, new JLabel(" "));
+			panelAddress.add(BorderLayout.SOUTH, panelSeparator);
+			
+			sqlName = nmbr; // -> sqlName value change to ID number value passed from Admin.java so that this will be use under delete button at ActionPerformed
+		}
+		catch(Exception error) { error.printStackTrace(); return; }
 		
 		panelFullEmpInfo.add(BorderLayout.NORTH, panelPhotoID);
         panelFullEmpInfo.add(BorderLayout.CENTER, panelNameAgeGend);
@@ -363,16 +368,15 @@ public class AdminEmpDetails extends JFrame implements ActionListener
 		});
 		btnDelete.setCursor(new Cursor(Cursor.HAND_CURSOR));
 		btnDelete.setToolTipText("Delete the selected date/time shift");
+		
+		if(count == 0)
+			btnDelete.setEnabled(false);
 		/*--- End . BUTTON DELETE ---*/
-		
-		
-		
 		
 		panelButtonDelete.add(BorderLayout.EAST, btnDelete);
 		panelBD.add(BorderLayout.CENTER, panelButtonDelete);
 		panelBD.add(BorderLayout.EAST, new JLabel("    "));
 		
-				
 		panelRIGHT.add(BorderLayout.NORTH, panelTimeLogsHeader);
         panelRIGHT.add(BorderLayout.CENTER, new JScrollPane(tableTimeLogs));
         panelRIGHT.add(BorderLayout.SOUTH, panelBD);
@@ -383,23 +387,20 @@ public class AdminEmpDetails extends JFrame implements ActionListener
         panelBOTTOM.add(BorderLayout.EAST, panelRIGHT);
 		
 		panelMAIN.add(BorderLayout.NORTH, panelTOP);
-        //panelMAIN.add(BorderLayout.CENTER, ); //-> extra slot 
         panelMAIN.add(BorderLayout.SOUTH, panelBOTTOM);
 		panelMAIN.setBorder(BorderFactory.createEtchedBorder(1));
 		
 		getContentPane().add(panelMAIN);	
 		
-		
 		this.addWindowListener
 		(	new WindowAdapter() 
 			{	public void windowClosing(WindowEvent e)
-				{	//close();
+				{	close();
 					System.exit(0);	}
 			}
 		);
     }
 
-/*	
 	public void close()
 	{
 		if (sqlRS != null)
@@ -423,22 +424,34 @@ public class AdminEmpDetails extends JFrame implements ActionListener
 			catch (SQLException e) {}
         }
 	}
-*/	
-	
+
 	public void actionPerformed(ActionEvent event)
 	{
         Object source = event.getSource();
-
-    }
-
-    public static void main(String[] args)
-	{
-        AdminEmpDetails frame = new AdminEmpDetails("1");
 		
-		frame.pack();
-		frame.setLocationRelativeTo(null);
-		frame.setResizable(false);
-		frame.setVisible(true);
-		frame.setTitle("JavaWookies Time Tracking System");
+		if(source == btnDelete)
+		{
+			if(tableTimeLogs.getSelectedRow()!=-1)
+			{	if(JOptionPane.showConfirmDialog(null, "Are you sure you want to delete this shift?", "", JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION)
+				{	sqlQuery = "DELETE FROM timelogs WHERE emp_id = ? AND date_in = ? AND time_in = ?";
+					try
+					{	ps = dbConn.prepareStatement(sqlQuery);
+						ps.setString(1, sqlName);
+						ps.setDate(2, java.sql.Date.valueOf(sqldateFormat.format(dateFormat.parse(tableTimeLogs.getValueAt(tableTimeLogs.getSelectedRow(), 0).toString()))));
+						ps.setTime(3, new Time(sqltimeFormat.parse(sqltimeFormat.format(timeFormat.parse(tableTimeLogs.getValueAt(tableTimeLogs.getSelectedRow(), 1).toString()))).getTime()));
+						ps.executeUpdate();
+					}
+					catch(Exception error){ error.printStackTrace(); return; }
+					
+					tableModelComputer.removeRow(tableTimeLogs.getSelectedRow());
+					tableModelTimeLogs.removeRow(tableTimeLogs.getSelectedRow());
+					panelMAIN.requestFocusInWindow();
+					if(tableTimeLogs.getRowCount()==0)
+						btnDelete.setEnabled(false);
+				
+					JOptionPane.showMessageDialog(null, "Selected shift successfully deleted!");
+				}
+			}
+		}
     }
 }
