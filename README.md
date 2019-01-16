@@ -2,7 +2,7 @@
 This ***README*** file contains all the information about our project: a time tracking system that was developed using **Java SE** *(Standard Edition)* technology. In *this repository*, you can also find a few *instructions on how to get this application up and running on your local machine* for further development and/or testing.
 
 # Table of Contents
-- **About the Project**
+- **Project Overview**
 - **Prerequisites**
 - **System Requirements**
 - **Development and Release**
