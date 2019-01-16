@@ -1,3 +1,9 @@
+//import java.util.Date;
+import java.text.SimpleDateFormat;
+
+import com.mysql.cj.jdbc.exceptions.*;
+import java.sql.*;
+import java.awt.Font;
 import java.awt.Cursor;
 import java.awt.Dimension;
 import javax.swing.table.DefaultTableModel;
@@ -13,21 +19,31 @@ import javax.swing.*;
 public class AdminEmpDetails extends JFrame implements ActionListener
 {
 	JLabel lblHeader, lblPhoto, lblLoginDetails, lblFacebook, lblInstagram, lblTwitter, lblPinterest, lblLinkedin, lblTimeLogsHeader, lblBack;
-    JButton btnDelete;
+	JButton btnDelete;
     JPanel panelMAIN, panelTOP, panelBOTTOM, panelPhoto, panelPhotoID, panelUP, panelNameAgeGend, panelFullEmpInfo, panelAddress, panelSeparator, panelLoginDetails;
 	JPanel panelLEFT, panelLogoLoginDet, panelSocialMedia, panelSeparator2, panelSM1, panelSM2, panelSM3, panelRIGHT, panelTimeLogsHeader, panelButtonDelete, panelBD;
 	
 	DefaultTableModel tableModelComputer = new DefaultTableModel(), tableModelTimeLogs = new DefaultTableModel();
 	JTable tableComputer = new JTable(tableModelComputer), tableTimeLogs = new JTable(tableModelTimeLogs);
 	String[] columnComputerDetails = {"Computer Name", "Login Date", "Login Time"}, rcrd = new String[3], columnTimeLogs = {"Date In", "Time In", "Date Out", "Time Out"}, recordTimeLogs = new String[4];
-	
+	String sqlIDnum, sqlName, sqlAge, sqlGender, sqlAddress;
+		
 	ImageIcon logoHeader = new ImageIcon("img/Employee Details header.png"), logoPhoto = new ImageIcon("img/photo frame.png"), logoLoginDetails = new ImageIcon("img/Login Details.png");
 	ImageIcon logoFacebook = new ImageIcon("img/social facebook.png"), logoInstagram = new ImageIcon("img/social instagram.png"), logoTwitter = new ImageIcon("img/social twitter.png");
 	ImageIcon logoPinterest = new ImageIcon("img/social pinterest.png"), logoLinkedin = new ImageIcon("img/social linkedin.png"), logoTimeLogsHeader = new ImageIcon("img/time logs header.png");
 	ImageIcon logoDelete = new ImageIcon("img/delete logo.png"), logoDeleteClicked = new ImageIcon("img/delete clicked logo.png"), logoBack = new ImageIcon("img/back logo.png"), logoBackClicked = new ImageIcon("img/back clicked logo.png");
 	Image image, newimg;
+	
+	Connection dbConn;
+	Statement sqlStmnt;
+	PreparedStatement ps;
+	String sqlQuery;
+	ResultSet sqlRS;
+	
+	SimpleDateFormat dateFormat = new SimpleDateFormat("MMM. dd, yyyy"), sqldateFormat = new SimpleDateFormat("yyyy-MM-dd");
+	SimpleDateFormat timeFormat = new SimpleDateFormat("hh:mm:ss a"), sqltimeFormat = new SimpleDateFormat("HH:mm:ss");
 
-    AdminEmpDetails()
+    AdminEmpDetails(String nmbr)
 	{
 		/*--- EMPLOYEE DETAILS HEADER ---*/
 		lblHeader = new JLabel("");
@@ -117,18 +133,13 @@ public class AdminEmpDetails extends JFrame implements ActionListener
 		{	public void mouseClicked(MouseEvent e)
 			{	tableComputer.clearSelection(); tableTimeLogs.clearSelection(); panelMAIN.requestFocusInWindow();
 				
-				//if(JOptionPane.showConfirmDialog(null, "Are you sure you want to Logout?", "Logout", JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION)
-				//{	close();
-					
-					Admin adm = new Admin();
-					adm.pack();
-					adm.setLocationRelativeTo(null);
-					adm.setResizable(false);
-					adm.setVisible(true);
-					adm.setTitle("JavaWookies Time Tracking System");
-					dispose();
-					
-				//}
+				Admin adm = new Admin();
+				adm.pack();
+				adm.setLocationRelativeTo(null);
+				adm.setResizable(false);
+				adm.setVisible(true);
+				adm.setTitle("JavaWookies Time Tracking System");
+				dispose();
 			}
 		});
 		/*--- End . BACK ICON ---*/
@@ -163,7 +174,7 @@ public class AdminEmpDetails extends JFrame implements ActionListener
 		panelButtonDelete = new JPanel(); panelButtonDelete.setLayout(new BorderLayout(1,1)); panelButtonDelete.setBackground(Color.lightGray);
 		panelBD = new JPanel(); panelBD.setLayout(new BorderLayout(1,1)); panelBD.setBackground(Color.lightGray);
 		
-		panelUP.add(BorderLayout.WEST, new JLabel("                                                                         "));
+		panelUP.add(BorderLayout.WEST, new JLabel("                                                                                  "));
 		panelUP.add(BorderLayout.CENTER, lblHeader);
 		panelUP.add(BorderLayout.EAST, lblBack);
 				
@@ -171,32 +182,9 @@ public class AdminEmpDetails extends JFrame implements ActionListener
         panelTOP.add(BorderLayout.CENTER, new JSeparator());
         
 		panelPhoto.add(BorderLayout.NORTH, new JLabel(" "));
-		panelPhoto.add(BorderLayout.WEST, new JLabel("                                        "));
+		panelPhoto.add(BorderLayout.WEST, new JLabel("                                             "));
         panelPhoto.add(BorderLayout.CENTER, lblPhoto);
 		
-		panelPhotoID.add(BorderLayout.NORTH, panelPhoto);
-        panelPhotoID.add(BorderLayout.CENTER, new JLabel("                                           ID #:  99999"));
-        panelPhotoID.add(BorderLayout.SOUTH, new JLabel(" "));
-		
-		panelNameAgeGend.add(BorderLayout.NORTH, new JLabel("  Name:  Benjie Pagador Fuentes"));
-        panelNameAgeGend.add(BorderLayout.CENTER, new JLabel("  Age:  35"));
-        panelNameAgeGend.add(BorderLayout.SOUTH, new JLabel("  Gender:  Male"));
-		
-		panelSeparator.add(BorderLayout.WEST, new JLabel("    "));
-        panelSeparator.add(BorderLayout.CENTER, new JSeparator());
-        panelSeparator.add(BorderLayout.EAST, new JLabel("    "));
-		
-		panelAddress.add(BorderLayout.NORTH, new JLabel("  Address:  4-A Archbishop Reyes Avenue, Cebu City"));
-        panelAddress.add(BorderLayout.CENTER, new JLabel(" "));
-        panelAddress.add(BorderLayout.SOUTH, panelSeparator);
-		
-		panelFullEmpInfo.add(BorderLayout.NORTH, panelPhotoID);
-        panelFullEmpInfo.add(BorderLayout.CENTER, panelNameAgeGend);
-        panelFullEmpInfo.add(BorderLayout.SOUTH, panelAddress);
-		
-		panelLogoLoginDet.add(BorderLayout.WEST, new JLabel("                                  "));
-        panelLogoLoginDet.add(BorderLayout.CENTER, lblLoginDetails);
-        
 		/*--- TABLE: LOGIN DETAILS ---*/
 		tableComputer.addMouseListener( new MouseAdapter()
 		{	public void mouseClicked(MouseEvent e)
@@ -209,14 +197,6 @@ public class AdminEmpDetails extends JFrame implements ActionListener
 		tableComputer.getTableHeader().setReorderingAllowed(false);
 		tableComputer.setDefaultEditor(Object.class, null); // making the table uneditable
 		tableComputer.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-		
-		rcrd[0] = "Alpha Computer";
-		rcrd[1] = "Jan. 12, 2019";
-		rcrd[2] = "03:55 AM";
-				
-		tableModelComputer.addRow(rcrd);
-		tableComputer.setPreferredScrollableViewportSize(new Dimension(310, 50));
-		tableComputer.setFillsViewportHeight(true);
 		/*--- End . TABLE: LOGIN DETAILS ---*/
 		
 		/*--- TABLE: TIME LOGS ---*/
@@ -231,17 +211,101 @@ public class AdminEmpDetails extends JFrame implements ActionListener
 		tableTimeLogs.getTableHeader().setReorderingAllowed(false);
 		tableTimeLogs.setDefaultEditor(Object.class, null); // making the table uneditable
 		tableTimeLogs.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-		
-		recordTimeLogs[0] = "Jan. 12, 2019";
-		recordTimeLogs[1] = "23:55 PM";
-		recordTimeLogs[2] = "Jan. 13, 2019";
-		recordTimeLogs[3] = "03:55 AM";
-		
-		tableModelTimeLogs.addRow(recordTimeLogs);
-		tableTimeLogs.setPreferredScrollableViewportSize(new Dimension(330, 60));
-		tableTimeLogs.setFillsViewportHeight(true);
 		/*--- End . TABLE: TIME LOGS ---*/
 		
+		try
+		{	dbConn = DriverManager.getConnection("jdbc:mysql://localhost:3306/timetracker", "admin", "adminuser");
+			sqlStmnt = dbConn.createStatement();
+			sqlQuery = "SELECT * FROM timelogs WHERE emp_id = '" + nmbr + "' ORDER BY date_in DESC, time_in DESC";
+			sqlRS = sqlStmnt.executeQuery(sqlQuery);
+			
+			while(sqlRS.next())
+			{
+				/*--- TABLE: LOGIN DETAILS ---*/
+				rcrd[0] = sqlRS.getString("computer_name");
+				rcrd[1] = dateFormat.format(sqlRS.getDate("date_in"));
+				rcrd[2] = timeFormat.format(sqlRS.getTime("time_in"));
+				
+				tableModelComputer.addRow(rcrd);
+				/*--- End . TABLE: LOGIN DETAILS ---*/
+				
+				/*--- TABLE: TIME LOGS ---*/
+				recordTimeLogs[0] = dateFormat.format(sqlRS.getDate("date_in"));
+				recordTimeLogs[1] = timeFormat.format(sqlRS.getTime("time_in"));
+				
+				if(sqlRS.getString("date_out").equals("0000-00-00"))
+				{	recordTimeLogs[2] = recordTimeLogs[3] = "";
+					//recordTimeLogs[3] = "";
+				}
+				else
+				{	recordTimeLogs[2] = dateFormat.format(sqlRS.getDate("date_out"));
+					recordTimeLogs[3] = timeFormat.format(sqlRS.getTime("time_out"));
+				}
+		
+				tableModelTimeLogs.addRow(recordTimeLogs);
+				/*--- End . TABLE: TIME LOGS ---*/
+			}
+		}
+		catch(Exception error){ error.printStackTrace(); return; }
+		
+		tableComputer.setPreferredScrollableViewportSize(new Dimension(320, 62));
+		tableComputer.setFillsViewportHeight(true);
+		
+		tableTimeLogs.setPreferredScrollableViewportSize(new Dimension(330, 60));
+		tableTimeLogs.setFillsViewportHeight(true);
+		//nmbr
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		sqlIDnum = nmbr;
+		panelPhotoID.add(BorderLayout.NORTH, panelPhoto);
+        panelPhotoID.add(BorderLayout.CENTER, new JLabel("                                                ID #:  " + sqlIDnum));
+		panelPhotoID.add(BorderLayout.SOUTH, new JLabel(" "));
+		
+		//sqlName
+		//sqlAge
+		//sqlGender
+		panelNameAgeGend.add(BorderLayout.NORTH, new JLabel("  Name:  " + sqlName));
+        panelNameAgeGend.add(BorderLayout.CENTER, new JLabel("  Age:  " + sqlAge));
+        panelNameAgeGend.add(BorderLayout.SOUTH, new JLabel("  Gender:  " + sqlGender));
+		
+		panelSeparator.add(BorderLayout.WEST, new JLabel("    "));
+        panelSeparator.add(BorderLayout.CENTER, new JSeparator());
+        panelSeparator.add(BorderLayout.EAST, new JLabel("    "));
+		
+		//sqlAddress
+		panelAddress.add(BorderLayout.NORTH, new JLabel("  Address:  " + sqlAddress));
+        panelAddress.add(BorderLayout.CENTER, new JLabel(" "));
+        panelAddress.add(BorderLayout.SOUTH, panelSeparator);
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		panelFullEmpInfo.add(BorderLayout.NORTH, panelPhotoID);
+        panelFullEmpInfo.add(BorderLayout.CENTER, panelNameAgeGend);
+        panelFullEmpInfo.add(BorderLayout.SOUTH, panelAddress);
+		
+		panelLogoLoginDet.add(BorderLayout.WEST, new JLabel("                                       "));
+        panelLogoLoginDet.add(BorderLayout.CENTER, lblLoginDetails);
+        
 		panelLoginDetails.add(BorderLayout.NORTH, panelLogoLoginDet);
         panelLoginDetails.add(BorderLayout.CENTER, new JScrollPane(tableComputer));
 		panelLoginDetails.add(BorderLayout.SOUTH, new JLabel(" "));
@@ -260,9 +324,9 @@ public class AdminEmpDetails extends JFrame implements ActionListener
         panelSM2.add(BorderLayout.CENTER, lblPinterest);
         panelSM2.add(BorderLayout.EAST, lblLinkedin);
 		
-		panelSM3.add(BorderLayout.WEST, new JLabel("                        "));
+		panelSM3.add(BorderLayout.WEST, new JLabel("                            "));
         panelSM3.add(BorderLayout.CENTER, panelSM2);
-        panelSM3.add(BorderLayout.EAST, new JLabel("                         "));
+        panelSM3.add(BorderLayout.EAST, new JLabel("                             "));
 		
 		panelSocialMedia.add(BorderLayout.NORTH, panelSeparator2);
         panelSocialMedia.add(BorderLayout.CENTER, panelSM3);
@@ -306,14 +370,13 @@ public class AdminEmpDetails extends JFrame implements ActionListener
 		
 		panelButtonDelete.add(BorderLayout.EAST, btnDelete);
 		panelBD.add(BorderLayout.CENTER, panelButtonDelete);
-		panelBD.add(BorderLayout.EAST, new JLabel(" "));
+		panelBD.add(BorderLayout.EAST, new JLabel("    "));
 		
 				
 		panelRIGHT.add(BorderLayout.NORTH, panelTimeLogsHeader);
         panelRIGHT.add(BorderLayout.CENTER, new JScrollPane(tableTimeLogs));
         panelRIGHT.add(BorderLayout.SOUTH, panelBD);
-		panelRIGHT.add(BorderLayout.WEST, new JLabel(" "));
-		panelRIGHT.add(BorderLayout.EAST, new JLabel(" "));
+		panelRIGHT.add(BorderLayout.EAST, new JLabel("    "));
 		
 		panelBOTTOM.add(BorderLayout.WEST, panelLEFT);
         panelBOTTOM.add(BorderLayout.CENTER, new JSeparator(JSeparator.VERTICAL));
@@ -370,7 +433,7 @@ public class AdminEmpDetails extends JFrame implements ActionListener
 
     public static void main(String[] args)
 	{
-        AdminEmpDetails frame = new AdminEmpDetails();
+        AdminEmpDetails frame = new AdminEmpDetails("1");
 		
 		frame.pack();
 		frame.setLocationRelativeTo(null);
