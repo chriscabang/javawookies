@@ -1,3 +1,5 @@
+import java.net.InetAddress;
+import java.net.UnknownHostException;
 import java.awt.Font;
 import com.mysql.cj.jdbc.exceptions.*;
 import java.sql.*;
@@ -19,9 +21,9 @@ public class Employee extends JFrame implements ActionListener, MouseListener
 	
 	SimpleDateFormat dateFormat = new SimpleDateFormat("MMM. dd, yyyy"), sqldateFormat = new SimpleDateFormat("yyyy-MM-dd");
 	SimpleDateFormat timeFormat = new SimpleDateFormat("hh:mm:ss a"), sqltimeFormat = new SimpleDateFormat("HH:mm:ss");
-	java.sql.Date sqlDate;
+	//java.sql.Date sqlDate;
 
-	DefaultTableModel tableModel = new DefaultTableModel();;
+	DefaultTableModel tableModel = new DefaultTableModel();
 	JTable tableLogtime = new JTable(tableModel);
 	String[] columnNames = {"ID Number", "Date In", "Time In", "Date Out", "Time Out"}, record = new String[5];
 	String stampDate, stampTime, datein, timein, idnum;
@@ -184,9 +186,33 @@ public class Employee extends JFrame implements ActionListener, MouseListener
 		this.addWindowListener
 		(	new WindowAdapter() 
 			{	public void windowClosing(WindowEvent e)
-				{	System.exit(0);		}
+				{	close(); System.exit(0);	}
 			}
 		);
+	}
+	
+	public void close()
+	{
+		if (sqlRS != null)
+		{	try
+			{	sqlRS.close();	} 
+			catch (SQLException e) {}
+        }
+        if (sqlStmnt != null)
+		{	try
+			{	sqlStmnt.close();	} 
+			catch (SQLException e) {}
+        }
+		if (ps != null)
+		{	try
+			{	ps.close();	} 
+			catch (SQLException e) {}
+        }
+		if (dbConn != null)
+		{	try
+			{	dbConn.close();	} 
+			catch (SQLException e) {}
+        }
 	}
 	
 	public void mouseClicked(MouseEvent e)
@@ -206,7 +232,8 @@ public class Employee extends JFrame implements ActionListener, MouseListener
 	{	Object source = event.getSource();
 		
 		if(source == buttonExit)
-		{	Login login = new Login();
+		{	close();
+			Login login = new Login();
 			login.pack();
 			login.setLocationRelativeTo(null);
 			login.setResizable(false);
@@ -242,12 +269,21 @@ public class Employee extends JFrame implements ActionListener, MouseListener
 		{	stampDate = sqldateFormat.format(new Date(System.currentTimeMillis()));
 			stampTime = sqltimeFormat.format(new Date(System.currentTimeMillis()));
 			
-			sqlQuery = "INSERT INTO timelogs (emp_id, date_in, time_in, date_out, time_out) VALUES (?, ?, ?, '0000-00-00', '00:00:00.000000')";
+			String hostname = "Unknown";
+			try
+			{	InetAddress addr;
+				addr = InetAddress.getLocalHost();
+				hostname = addr.getHostName();
+			}
+			catch (UnknownHostException ex) {}
+			
+			sqlQuery = "INSERT INTO timelogs (emp_id, date_in, time_in, date_out, time_out, computer_name) VALUES (?, ?, ?, '0000-00-00', '00:00:00.000000', ?)";
 			try
 			{	ps = dbConn.prepareStatement(sqlQuery);
 				ps.setString(1, idnum);
 				ps.setDate(2, java.sql.Date.valueOf(stampDate));
 				ps.setTime(3, new Time(sqltimeFormat.parse(stampTime).getTime()));
+				ps.setString(4, hostname);
 				ps.executeUpdate();
 				
 				record[0] = idnum;
