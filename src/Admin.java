@@ -1,16 +1,10 @@
 import javax.swing.table.TableColumnModel;
 import java.util.Arrays;
-
 import java.awt.Image;
 import java.awt.Cursor;
-import javax.swing.BorderFactory;
 import com.mysql.cj.jdbc.exceptions.*;
 import java.sql.*;
 import javax.swing.table.DefaultTableModel;
-import javax.swing.JTable; 
-//import java.text.SimpleDateFormat;
-//import java.util.Date;
-
 import java.awt.Color;
 import java.awt.BorderLayout;
 import java.awt.event.*;
@@ -29,10 +23,6 @@ public class Admin extends JFrame implements ActionListener
 	ImageIcon logoEdit = new ImageIcon("img/edit logo.png"), logoEditClicked = new ImageIcon("img/edit clicked logo.png"), logoDeleteEmployee = new ImageIcon("img/delete user logo.png"), logoDeleteEmployeeClicked = new ImageIcon("img/delete user clicked logo.png");
 	ImageIcon logoDeleteAll = new ImageIcon("img/delete all user logo.png"), logoDeleteAllClicked = new ImageIcon("img/delete all user clicked logo.png");
 	Image image, newimg;
-	
-	//SimpleDateFormat dateFormat = new SimpleDateFormat("MMM. dd, yyyy"), sqldateFormat = new SimpleDateFormat("yyyy-MM-dd");
-	//SimpleDateFormat timeFormat = new SimpleDateFormat("hh:mm:ss a"), sqltimeFormat = new SimpleDateFormat("HH:mm:ss");
-	//java.sql.Date sqlDate;
 	
 	DefaultTableModel tableModel = new DefaultTableModel();
 	JTable table = new JTable(tableModel);
@@ -109,7 +99,7 @@ public class Admin extends JFrame implements ActionListener
 		});
 		lblSettings.setCursor(new Cursor(Cursor.HAND_CURSOR));
 		lblSettings.setToolTipText("Account Settings: Reset Password");
-/*--- SETTINGS ICON UPPER RIGHT HAND CORNER ---*/
+/*--- End . SETTINGS ICON UPPER RIGHT HAND CORNER ---*/
 		
 /*--- SEARCH ICON ---*/
 		lblSearch = new JLabel("");
@@ -134,7 +124,7 @@ public class Admin extends JFrame implements ActionListener
 		});
 		lblSearch.setCursor(new Cursor(Cursor.HAND_CURSOR));
 		lblSearch.setToolTipText("Search");
-/*--- SEARCH ICON ---*/
+/*--- End . SEARCH ICON ---*/
 
         tfSearch = new JTextField("Search employee", 20);
 		tfSearch.setEnabled(false);
@@ -175,7 +165,7 @@ public class Admin extends JFrame implements ActionListener
 		{	public void mouseClicked(MouseEvent e)
 			{	Addemp();	}
 		});
-/*--- ADD EMPLOYEE ICON ---*/
+/*--- End . ADD EMPLOYEE ICON ---*/
 
 /*--- BACK ICON ---*/
 		lblBack = new JLabel("");
@@ -215,7 +205,7 @@ public class Admin extends JFrame implements ActionListener
 				}
 			}
 		});
-/*--- BACK ICON ---*/
+/*--- End . BACK ICON ---*/
 
 /*--- TABLE TABLE TABLE ---*/
 		try
@@ -285,7 +275,7 @@ public class Admin extends JFrame implements ActionListener
 			});
 		}
 		catch(Exception error){ error.printStackTrace(); return; }
-/*--- TABLE TABLE TABLE ---*/
+/*--- End . TABLE TABLE TABLE ---*/
 
 /*--- BUTTONS BUTTONS BUTTONS BUTTONS BUTTONS BUTTONS  BUTTONS BUTTONS BUTTONS  BUTTONS BUTTONS BUTTONS  BUTTONS BUTTONS BUTTONS  BUTTONS BUTTONS BUTTONS ---*/
 	/*--- BUTTON TIME LOGS ---*/
@@ -315,7 +305,7 @@ public class Admin extends JFrame implements ActionListener
 		});
 		btnTimeLogs.setCursor(new Cursor(Cursor.HAND_CURSOR));
 		btnTimeLogs.setToolTipText("View selected employee's time logs and Account details");
-	/*--- BUTTON TIME LOGS ---*/
+	/*--- End . BUTTON TIME LOGS ---*/
 	
 	/*--- BUTTON EDIT ---*/
 		btnEdit = new JButton("Edit");
@@ -344,7 +334,7 @@ public class Admin extends JFrame implements ActionListener
 		});
 		btnEdit.setCursor(new Cursor(Cursor.HAND_CURSOR));
 		btnEdit.setToolTipText("Edit employee's information");
-	/*--- BUTTON EDIT ---*/
+	/*--- End . BUTTON EDIT ---*/
 	
 	/*--- BUTTON DELETE EMPLOYEE ---*/
 		btnDeleteEmployee = new JButton("Delete");
@@ -373,7 +363,7 @@ public class Admin extends JFrame implements ActionListener
 		});
 		btnDeleteEmployee.setCursor(new Cursor(Cursor.HAND_CURSOR));
 		btnDeleteEmployee.setToolTipText("Delete the selected employee / user");
-	/*--- BUTTON DELETE EMPLOYEE ---*/
+	/*--- End . BUTTON DELETE EMPLOYEE ---*/
 	
 	/*--- BUTTON DELETE ALL EMPLOYEE ---*/
 		btnDeleteAll = new JButton("Delete All");
@@ -402,7 +392,7 @@ public class Admin extends JFrame implements ActionListener
 		});
 		btnDeleteAll.setCursor(new Cursor(Cursor.HAND_CURSOR));
 		btnDeleteAll.setToolTipText("Delete all employees / users");
-	/*--- BUTTON DELETE ALL EMPLOYEE ---*/
+	/*--- End . BUTTON DELETE ALL EMPLOYEE ---*/
 /*--- BUTTONS BUTTONS BUTTONS BUTTONS BUTTONS BUTTONS  BUTTONS BUTTONS BUTTONS  BUTTONS BUTTONS BUTTONS  BUTTONS BUTTONS BUTTONS  BUTTONS BUTTONS BUTTONS ---*/
 		
 		try
@@ -419,6 +409,7 @@ public class Admin extends JFrame implements ActionListener
 		{	public void mouseClicked(MouseEvent e)
 			{	focusMainWindow();	}
 		});	
+		
 		panelTOP = new JPanel(); panelTOP.setLayout(new BorderLayout(1,1)); panelTOP.setBackground(Color.lightGray);
 		panelTOP.setBorder(BorderFactory.createEtchedBorder(1));
 		panelSearch = new JPanel(); panelSearch.setLayout(new BorderLayout(1,1)); panelSearch.setBackground(Color.lightGray);
@@ -429,14 +420,13 @@ public class Admin extends JFrame implements ActionListener
 		panelButtonRIGHT = new JPanel(); panelButtonRIGHT.setLayout(new BorderLayout(1,1)); panelButtonRIGHT.setBackground(Color.lightGray);
 		panelBottom = new JPanel(); panelBottom.setLayout(new BorderLayout(1,1)); panelBottom.setBackground(Color.lightGray);
 		
-		//panelUpperRightCorner.add(BorderLayout.WEST, ); // --> if you need to add another icon at the upper right hand corner of the page
 		panelUpperRightCorner.add(BorderLayout.CENTER, lblSettings);
 		panelUpperRightCorner.add(BorderLayout.EAST, lblBack);	
 		
 		panelTOP.add(BorderLayout.WEST, lblAdmin);
-		//panelTOP.add(BorderLayout.CENTER, lblAdmin); // --> if you need to add another icon at the top
 		panelTOP.add(BorderLayout.EAST, panelUpperRightCorner);
 		
+		panelSearch.add(BorderLayout.NORTH, new JLabel(" "));
 		panelSearch.add(BorderLayout.WEST, lblAddEmployee);
 		panelSearch.add(BorderLayout.CENTER, tfSearch);
 		panelSearch.add(BorderLayout.EAST, lblSearch);
@@ -450,15 +440,12 @@ public class Admin extends JFrame implements ActionListener
 		panelButtonLEFT.add(BorderLayout.EAST, btnDeleteEmployee);
 		
 		panelButtonRIGHT.add(BorderLayout.WEST, new JLabel("                                                             "));
-		//panelButtonRIGHT.add(BorderLayout.CENTER, ); // --> if you need to add another button bottom right hand corner
 		panelButtonRIGHT.add(BorderLayout.EAST, btnDeleteAll);
 		
 		panelBottom.add(BorderLayout.WEST, panelButtonLEFT);
-		//panelBottom.add(BorderLayout.CENTER, ); // --> if you need to add another button bottom right hand corner
 		panelBottom.add(BorderLayout.EAST, panelButtonRIGHT);
 		
         panelEmpTableButtons.add(BorderLayout.NORTH, new JScrollPane(table)); 
-        //panelEmpTableButtons.add(BorderLayout.CENTER, ); // --> if you need to add another icon between the Employee Table and the buttons
         panelEmpTableButtons.add(BorderLayout.SOUTH, panelBottom);
 				
 		panelMain.add(BorderLayout.NORTH, panelTOP); 
@@ -510,15 +497,17 @@ public class Admin extends JFrame implements ActionListener
 	}
 	
 	public void disableButtons()
-	{	btnTimeLogs.setEnabled(false);
+	{	
+		btnTimeLogs.setEnabled(false);
 		btnEdit.setEnabled(false);
 		btnDeleteEmployee.setEnabled(false);
 		btnDeleteAll.setEnabled(false);
 		lblSearch.setEnabled(false);
 	}
 	
-    public void actionPerformed(ActionEvent event)
-	{	Object source = event.getSource();
+	public void actionPerformed(ActionEvent event)
+	{	
+		Object source = event.getSource();
         
 		if(source == btnDeleteAll)
 		{	if(btnDeleteAll.isEnabled())
@@ -563,7 +552,7 @@ public class Admin extends JFrame implements ActionListener
 					try
 					{	ps = dbConn.prepareStatement(sqlQuery);
 						if(ps != null)
-						{	ps.setString(1, (table.getValueAt(table.getSelectedRow(), 1).toString()));
+						{	ps.setString(1, table.getValueAt(table.getSelectedRow(), 1).toString());
 							ps.executeUpdate();
 						}
 					}
@@ -576,6 +565,17 @@ public class Admin extends JFrame implements ActionListener
 					JOptionPane.showMessageDialog(null, "Employee successfully deleted!");
 				}
 			}
+		}
+		else if(source == btnTimeLogs)
+		{	AdminEmpDetails aed = new AdminEmpDetails(table.getValueAt(table.getSelectedRow(), 1).toString());
+			
+			aed.pack();
+			aed.setLocationRelativeTo(null);
+			aed.setResizable(false);
+			aed.setVisible(true);
+			aed.setTitle("JavaWookies Time Tracking System");
+			
+			dispose();
 		}
 	}
 	
@@ -690,7 +690,7 @@ public class Admin extends JFrame implements ActionListener
         panelFullName.add(BorderLayout.SOUTH, panelLname);
 		
 		panelSeparatorLEFTRIGHT.add(BorderLayout.WEST, new JLabel("     "));
-		panelSeparatorLEFTRIGHT.add(BorderLayout.CENTER, new JSeparator());         
+		panelSeparatorLEFTRIGHT.add(BorderLayout.CENTER, new JSeparator());
         panelSeparatorLEFTRIGHT.add(BorderLayout.EAST, new JLabel("     "));
 		
 		panelSeparatorUPDOWN.add(BorderLayout.NORTH, new JLabel("  "));
@@ -801,7 +801,7 @@ public class Admin extends JFrame implements ActionListener
 						JOptionPane.showMessageDialog(null, "New Employee successfully added!");
 					}
 					catch(Exception error){ error.printStackTrace(); return; }
-					/*--- ADD to database ---*/
+					/*--- End . ADD to database ---*/
 				} 
 				else
 				{	lblVerify.setText("Passcode not verified  "); lblVerify.setForeground(Color.RED);
@@ -833,8 +833,7 @@ public class Admin extends JFrame implements ActionListener
 		frame.pack();
 		frame.setLocationRelativeTo(null);
 		frame.setResizable(false);
-		//frame.setSize(800,200); // (x, y)
-        frame.setVisible(true);
+		frame.setVisible(true);
 		frame.setTitle("JavaWookies Time Tracking System");
 		
 	}
