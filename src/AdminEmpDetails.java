@@ -262,15 +262,15 @@ public class AdminEmpDetails extends JFrame implements ActionListener
 			if(sqlRS.getString("emp_mname").length()!=0)
 			{	if(sqlRS.getString("emp_fname").length()!=0)
 				{	if(sqlRS.getString("emp_lname").length()!=0)
-						sqlName = sqlRS.getString("emp_lname") + ", " + sqlRS.getString("emp_fname") + " " + sqlRS.getString("emp_mname").substring(0, 1) + ".";
+						sqlName = sqlRS.getString("emp_lname") + ", " + sqlRS.getString("emp_fname") + " " + sqlRS.getString("emp_mname");
 					else
-						sqlName = sqlRS.getString("emp_fname") + " " + sqlRS.getString("emp_mname").substring(0, 1) + ".";
+						sqlName = sqlRS.getString("emp_fname") + " " + sqlRS.getString("emp_mname");
 				}
 				else
 				{	if(sqlRS.getString("emp_lname").length()!=0)
-						sqlName = sqlRS.getString("emp_lname") + ", " + sqlRS.getString("emp_mname").substring(0, 1) + ".";
+						sqlName = sqlRS.getString("emp_lname") + ", " + sqlRS.getString("emp_mname");
 					else
-						sqlName = sqlRS.getString("emp_mname").substring(0, 1) + ".";
+						sqlName = sqlRS.getString("emp_mname");
 				}
 			}
 			else
