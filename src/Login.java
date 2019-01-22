@@ -1,11 +1,9 @@
 import com.mysql.cj.jdbc.exceptions.*;
 import java.sql.*;
-
 import java.awt.Image;
 import java.util.Date;
 import java.text.SimpleDateFormat;
 import java.awt.Font;
-
 import java.awt.Color;
 import java.awt.BorderLayout;
 import java.awt.event.*;
@@ -23,7 +21,6 @@ public class Login extends JFrame implements ActionListener{
 	Image image = logo.getImage(); // transform it 
 	Image newimg = image.getScaledInstance(150, 90, java.awt.Image.SCALE_SMOOTH); // scale it the smooth way  
 	
-	//DateFormat dateFormat = new SimpleDateFormat("yyyy/MMM/dd HH:mm:ss");
 	SimpleDateFormat dateFormat = new SimpleDateFormat("MMM dd, yyyy");
 	SimpleDateFormat timeFormat = new SimpleDateFormat("hh:mm:ss a"); // not in military time. If you want to use military time use HH then take out a
 	
@@ -58,8 +55,6 @@ public class Login extends JFrame implements ActionListener{
 		Font f2 = new Font("Arial", Font.BOLD,25);
 		lTime.setFont(f2);
 		lTime.setForeground(Color.BLUE);
-		//lDate.setText(dateFormat.format(new Date())); // -> long process of setting the text value of lDate
-		//lTime.setText(timeFormat.format(new Date())); // -> long process of setting the text value of lTime
 		        
         tfIDnumber = new JTextField(5) // as agreed, should compose of 5 digits only
 		{	public void processKeyEvent(KeyEvent ev)
@@ -119,7 +114,7 @@ public class Login extends JFrame implements ActionListener{
 		panelLogoTrack = new JPanel();
 		panelLogoTrack.setLayout(new BorderLayout(1,1));
         panelLogoTrack.setBackground(Color.lightGray);
-		/* ========= PANEL creation ========= */
+		/* ========= End . PANEL creation ========= */
 		
 		
 		/* ========= layouting the PANELS ========= */
@@ -153,61 +148,67 @@ public class Login extends JFrame implements ActionListener{
 		panelMain.add(BorderLayout.NORTH, panelLogoTrack);
         panelMain.add(BorderLayout.CENTER, panelDateTime);
         panelMain.add(BorderLayout.SOUTH, panelIDPassSign);
-		/* ========= layouting the PANELS ========= */
+		/* ========= End . layouting the PANELS ========= */
 			
-		/* ang pinakaMAIN panel kai gibutang sulod sa ContentPane */
-        getContentPane().add(panelMain); // diri, gigamit na ang panel kai humana man siya instantiate sa taas (see line 31)
-		/* ang pinakaMAIN panel kai gibutang sulod sa ContentPane */
+		getContentPane().add(panelMain);
 		
 		/* ========= code in making the clock ticks ========= */
 		Timer timer;
 		timer = new Timer(1000, new ActionListener()
-		{
-			public void actionPerformed(ActionEvent e)
-			{
-				//lDate.setText(dateFormat.format(new Date(System.currentTimeMillis())));
-				lTime.setText(timeFormat.format(new Date(System.currentTimeMillis())));
+		{	public void actionPerformed(ActionEvent e)
+			{	lTime.setText(timeFormat.format(new Date(System.currentTimeMillis())));
 				panelTime.setBorder(BorderFactory.createTitledBorder(BorderFactory.createLoweredBevelBorder(),dateFormat.format(new Date(System.currentTimeMillis())),2,0));
 			}
 		}
 		);
 		timer.setRepeats(true);
 		timer.start();
-		/* ========= code in making the clock ticks ========= */
+		/* ========= End . code in making the clock ticks ========= */
 		
 		this.getRootPane().setDefaultButton(buttonSignIn); // making Sign In as the default button and enable "Enter" key to function
 		
 		this.addWindowListener
-		(
-			new WindowAdapter() 
-			{
-				public void windowClosing(WindowEvent e)
-				{
-						System.exit(0);
-				}
+		(	new WindowAdapter() 
+			{	public void windowClosing(WindowEvent e)
+				{	close(); System.exit(0);	}
 			}
 		);
 	}
+	
+	public void close()
+	{
+		if (sqlRS != null)
+		{	try
+			{	sqlRS.close();	} 
+			catch (SQLException e) {}
+        }
+        if (sqlStmnt != null)
+		{	try
+			{	sqlStmnt.close();	} 
+			catch (SQLException e) {}
+        }
+		if (dbConn != null)
+		{	try
+			{	dbConn.close();	} 
+			catch (SQLException e) {}
+        }
+	}
+	
 
     public void actionPerformed(ActionEvent event)
 	{
 		Object source = event.getSource();
 		
 		if (_clickMeMode)
-		{
-			try
-			{
-				String strPassword = new String(tfPasscode.getPassword());
+		{	try
+			{	String strPassword = new String(tfPasscode.getPassword());
 				
 				dbConn = DriverManager.getConnection("jdbc:mysql://localhost:3306/timetracker", "admin", "adminuser");
 				sqlStmnt = dbConn.createStatement();
 				sqlQuery = "SELECT * FROM employees WHERE emp_id = '" + tfIDnumber.getText() + "' AND passcode = '" + strPassword + "'";
 				sqlRS = sqlStmnt.executeQuery(sqlQuery);
 				if(sqlRS.next())
-				{	sqlRS.close();
-					sqlStmnt.close();
-					dbConn.close();
-				}
+					close();
 				else
 				{	JOptionPane.showMessageDialog(null, "NO RECORD FOUND!", "ALERT", JOptionPane.ERROR_MESSAGE); // error dialog box NOTE: need better error message
 					tfIDnumber.setText(""); tfIDnumber.requestFocus(); // set focus on tfIDnumber after error message prompted
@@ -215,38 +216,33 @@ public class Login extends JFrame implements ActionListener{
 					return;
 				}
 			}
-			catch(Exception error) { error.printStackTrace(); return; }
-            
+			catch(Exception error){ error.printStackTrace(); return; }
+			
 			if(tfIDnumber.getText().equals("0"))
-			{
-				JOptionPane.showMessageDialog(null, "ADMIN page: Under Repair.");
-				tfIDnumber.setText(""); tfIDnumber.requestFocus();
-				tfPasscode.setText("");
-				return;
+			{	Admin adm = new Admin();
+				adm.pack();
+				adm.setLocationRelativeTo(null);
+				adm.setResizable(false);
+				adm.setVisible(true);
+				adm.setTitle("JavaWookies Time Tracking System");
+				dispose();
 			}
-			
-			Employee eui = new Employee(tfIDnumber.getText());
-			eui.pack();
-			eui.setLocationRelativeTo(null);
-			eui.setResizable(false);
-			eui.setVisible(true);
-			eui.setTitle("JavaWookies Time Tracking System");
-			
-			dispose();			
+			else
+			{	Employee eui = new Employee(tfIDnumber.getText());
+				eui.pack();
+				eui.setLocationRelativeTo(null);
+				eui.setResizable(false);
+				eui.setVisible(true);
+				eui.setTitle("JavaWookies Time Tracking System");
+				dispose();
+			}
 		}
     }
 
     public static void main(String[] args)
-	{	Login frame = new Login();
-		frame = new Login();
-
-        WindowListener l = new WindowAdapter()
-		{	public void windowClosing(WindowEvent e)
-			{	System.exit(0);		}
-        };
-
-        frame.addWindowListener(l);
-        frame.pack();
+	{	
+		Login frame = new Login();
+		frame.pack();
 		frame.setLocationRelativeTo(null);
 		frame.setResizable(false);
         frame.setVisible(true);
