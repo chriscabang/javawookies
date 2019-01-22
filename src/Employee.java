@@ -26,7 +26,7 @@ public class Employee extends JFrame implements ActionListener, MouseListener
 	DefaultTableModel tableModel = new DefaultTableModel();
 	JTable tableLogtime = new JTable(tableModel);
 	String[] columnNames = {"ID Number", "Date In", "Time In", "Date Out", "Time Out"}, record = new String[5];
-	String stampDate, stampTime, datein, timein, idnum;
+	String stampDate, stampTime, datein, timein, idnum, sqlName, namename;
 	
 	Connection dbConn;
 	Statement sqlStmnt;
@@ -56,10 +56,47 @@ public class Employee extends JFrame implements ActionListener, MouseListener
 			sqlRS = sqlStmnt.executeQuery(sqlQuery);
 			sqlRS.first();
 		
-			lblWelcome = new JLabel ("         *  Hi, " + sqlRS.getString("emp_fname") + "!  *");
+			if(sqlRS.getString("emp_mname").length()!=0)
+			{	if(sqlRS.getString("emp_fname").length()!=0)
+				{	if(sqlRS.getString("emp_lname").length()!=0)
+						sqlName = sqlRS.getString("emp_lname") + ", " + sqlRS.getString("emp_fname") + " " + sqlRS.getString("emp_mname");
+					else
+						sqlName = sqlRS.getString("emp_fname") + " " + sqlRS.getString("emp_mname");
+					namename = sqlRS.getString("emp_fname");
+				}
+				else
+				{	if(sqlRS.getString("emp_lname").length()!=0)
+					{	sqlName = sqlRS.getString("emp_lname") + ", " + sqlRS.getString("emp_mname");
+						namename = sqlRS.getString("emp_lname");
+					}
+					else
+					{	sqlName = sqlRS.getString("emp_mname");
+						namename = sqlRS.getString("emp_mname");
+					}
+				}
+			}
+			else
+			{	if(sqlRS.getString("emp_fname").length()!=0)
+				{	if(sqlRS.getString("emp_lname").length()!=0)
+						sqlName = sqlRS.getString("emp_lname") + ", " + sqlRS.getString("emp_fname");
+					else
+						sqlName = sqlRS.getString("emp_fname");
+					namename = sqlRS.getString("emp_fname");
+				}
+				else
+				{	if(sqlRS.getString("emp_lname").length()!=0)
+					{	sqlName = sqlRS.getString("emp_lname");
+						namename = sqlRS.getString("emp_lname");
+					}
+					else
+						sqlName = "";
+				}
+			}
+		
+			lblWelcome = new JLabel ("         *  Hi, " + namename + "!  *");
 			lblWelcome.setFont(new Font("Arial Bold", Font.ITALIC,14));
 			lblWelcome.setForeground(Color.BLUE);
-			lblName = new JLabel (" Name: " + sqlRS.getString("emp_fname") + " " + sqlRS.getString("emp_mname") + " " + sqlRS.getString("emp_lname"));
+			lblName = new JLabel (" Name: " + sqlName);
 			lblID = new JLabel (" ID#: " + sqlRS.getString("emp_id"));
 			lblAge = new JLabel (" Age: " + sqlRS.getString("emp_age"));
 			lblGender = new JLabel (" Gender: " + sqlRS.getString("emp_gender"));
