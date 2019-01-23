@@ -1,5 +1,5 @@
-# **Time Tracking System** by *JavaWookies*
-This ***README*** file contains all the information about our project: a time tracking system that was developed using **Java SE** *(Standard Edition)* technology. In *this repository*, you can find *instructions on how to get this application up and running on your local machine* for further development and/or testing.
+# *Time Tracking System* by *JavaWookies*
+This ***README*** file contains all the information about our project: a time tracking system that uses **Java SE** *(Standard Edition)* technology. In *this repository*, you will understand what this system is all about and you will also find the *instructions on how to get this application up and running on your local machine* for further development and/or testing.
 
 # Table of Contents
 - **Project Overview**
@@ -14,9 +14,9 @@ This ***README*** file contains all the information about our project: a time tr
 
 Our system is called the ***JavaWookies Time Tracking System***.
 
-The **Javawookies Time Tracking System** is a *Login/Logout* application that allows two (2) types of users to log in. The users are classified into *Employee* and *Admin*, and both can sign in to their specific accounts and view the corresponding details. The user *Employee* has the ability to check its login/logout details on that day, while the user *Admin* has the ability to add, delete, and edit information of recent and former employees. The system records the time of a specific user who logs in or out based on the local machine's timer.
+The **Javawookies Time Tracking System** is a desktop/laptop application targeted at small- to medium-sized businesses. The system is simply a *Login/Logout* application that allows two (2) types of users to log in. The users are classified into *Employee* and *Admin*, and both can sign in to their specific accounts and view the corresponding details. The user *Employee* has the ability to check its login/logout details on that day, while the user *Admin* has the ability to add, delete, and edit information of recent and former employees. The system records the time of a specific user who logs in or out based on the local machine's timer.
 
-The **Javawookies Time Tracking System** is a desktop/laptop application targeted at small- to medium-sized businesses. Using this system, employers can keep track of the *Time-In/Time-Out (TITO)* of their employees, view their time logs, and register newly hired employees to the database. In addition, they can also incorporate images of their company logo into this system's design. This application runs in real time.
+Using this system, employers can keep track of the *Time-In/Time-Out (TITO)* of their employees, view their time logs, and register newly hired employees to the database. In addition, they can also incorporate images of their company logo into this system's design. This application runs in real time.
 
 # Prerequisites
 - Java SE Development Kit 8 for compiling .java files
@@ -131,7 +131,7 @@ The **Javawookies Time Tracking System** is a desktop/laptop application targete
 ![29](https://github.com/chriscabang/javawookies/blob/master/doc/img/PhpMyAdmin_06.png "29")
 
 # Development and Release Dates
-**JavaWookies** started development of the *Time Tracking System* on *December 15, 2018*. However, at the time of this writing, it is still in its final stages of development, thus you may experience lacking features and several bugs during testing. The application is expected to be released *on or before January 26, 2019*.
+**JavaWookies** started developing this *Time Tracking System* last *December 15, 2018*. However, at the time of this writing, we are still continuing its development, thus you may experience several bugs during testing and some features are not working. The application will be pre-released *on or before January 26, 2019*.
 
 # Notes/Updates
 - "Login.java" can be found under "src" folder.
