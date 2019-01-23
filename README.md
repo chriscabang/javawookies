@@ -1,5 +1,5 @@
 # *Time Tracking System* by *JavaWookies*
-This ***README*** file contains all the information about our project: a time tracking system that was developed using **Java SE** *(Standard Edition)* technology. In *this repository*, you can find *instructions on how to get this application up and running on your local machine* for further development and/or testing.
+This ***README*** file contains all the information about our project: a time tracking system that uses **Java SE** *(Standard Edition)* technology. In *this repository*, you will understand what this system is all about and you will also find the *instructions on how to get this application up and running on your local machine* for further development and/or testing.
 
 # Table of Contents
 - **Project Overview**
