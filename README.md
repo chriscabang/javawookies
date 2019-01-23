@@ -131,7 +131,7 @@ Using this system, employers can keep track of the *Time-In/Time-Out (TITO)* of 
 ![29](https://github.com/chriscabang/javawookies/blob/master/doc/img/PhpMyAdmin_06.png "29")
 
 # Development and Release Dates
-**JavaWookies** started development of the *Time Tracking System* on *December 15, 2018*. However, at the time of this writing, it is still in its final stages of development, thus you may experience lacking features and several bugs during testing. The application is expected to be released *on or before January 26, 2019*.
+**JavaWookies** started developing this *Time Tracking System* last *December 15, 2018*. However, at the time of this writing, we are still continuing its development, thus you may experience several bugs during testing and some features are not working. The application will be pre-released *on or before January 26, 2019*.
 
 # Notes/Updates
 - "Login.java" can be found under "src" folder.
