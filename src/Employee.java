@@ -21,7 +21,6 @@ public class Employee extends JFrame implements ActionListener, MouseListener
 	
 	SimpleDateFormat dateFormat = new SimpleDateFormat("MMM. dd, yyyy"), sqldateFormat = new SimpleDateFormat("yyyy-MM-dd");
 	SimpleDateFormat timeFormat = new SimpleDateFormat("hh:mm:ss a"), sqltimeFormat = new SimpleDateFormat("HH:mm:ss");
-	//java.sql.Date sqlDate;
 
 	DefaultTableModel tableModel = new DefaultTableModel();
 	JTable tableLogtime = new JTable(tableModel);
@@ -126,7 +125,7 @@ public class Employee extends JFrame implements ActionListener, MouseListener
 					record[4] = timeFormat.format(sqlRS.getTime("time_out"));
 				}
 				
-				tableModel.addRow(record);				
+				tableModel.addRow(record);
 			}
 			if(sqlRS.first())
 			{	datein = sqlRS.getString("date_in");
@@ -297,13 +296,16 @@ public class Employee extends JFrame implements ActionListener, MouseListener
 				
 				buttonIn.setEnabled(true);
 				buttonOut.setEnabled(false);
+				tableLogtime.clearSelection(); panelMain.requestFocusInWindow();
 				
 				JOptionPane.showMessageDialog(null, "Time Out successful!");
 			}
 			catch(Exception error){ error.printStackTrace(); return; }
 		}
 		else if(source == buttonIn)
-		{	stampDate = sqldateFormat.format(new Date(System.currentTimeMillis()));
+		{	tableLogtime.clearSelection(); panelMain.requestFocusInWindow();
+	
+			stampDate = sqldateFormat.format(new Date(System.currentTimeMillis()));
 			stampTime = sqltimeFormat.format(new Date(System.currentTimeMillis()));
 			
 			String hostname = "Unknown";
@@ -392,8 +394,14 @@ public class Employee extends JFrame implements ActionListener, MouseListener
 			
 				tableModel.removeRow(tableLogtime.getSelectedRow());
 				panelMain.requestFocusInWindow();
+				
 				buttonIn.setEnabled(true);
 				buttonOut.setEnabled(false);
+				if(tableLogtime.getValueAt(0, 3) == "")
+				{	buttonIn.setEnabled(false);
+					buttonOut.setEnabled(true);
+				}
+				
 				if(tableLogtime.getRowCount()==0)
 					buttonDelete.setEnabled(false);
 				
