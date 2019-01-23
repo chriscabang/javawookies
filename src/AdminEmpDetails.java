@@ -244,7 +244,7 @@ public class AdminEmpDetails extends JFrame implements ActionListener
 		}
 		catch(Exception error){ error.printStackTrace(); return; }
 		
-		tableComputer.setPreferredScrollableViewportSize(new Dimension(320, 62));
+		tableComputer.setPreferredScrollableViewportSize(new Dimension(320, 63));
 		tableComputer.setFillsViewportHeight(true);
 		
 		tableTimeLogs.setPreferredScrollableViewportSize(new Dimension(330, 60));
@@ -375,12 +375,23 @@ public class AdminEmpDetails extends JFrame implements ActionListener
 		
 		panelButtonDelete.add(BorderLayout.EAST, btnDelete);
 		panelBD.add(BorderLayout.CENTER, panelButtonDelete);
-		panelBD.add(BorderLayout.EAST, new JLabel("    "));
+		//panelBD.add(BorderLayout.EAST, new JLabel("    "));
 		
 		panelRIGHT.add(BorderLayout.NORTH, panelTimeLogsHeader);
         panelRIGHT.add(BorderLayout.CENTER, new JScrollPane(tableTimeLogs));
         panelRIGHT.add(BorderLayout.SOUTH, panelBD);
-		panelRIGHT.add(BorderLayout.EAST, new JLabel("    "));
+		
+		if(tableTimeLogs.getRowCount()<=3)
+		{
+			panelRIGHT.add(BorderLayout.WEST, new JLabel(" "));
+			panelRIGHT.add(BorderLayout.EAST, new JLabel(" "));
+			panelBD.add(BorderLayout.EAST, new JLabel(" "));
+		}
+		else
+		{
+			panelRIGHT.add(BorderLayout.EAST, new JLabel("    "));
+			panelBD.add(BorderLayout.EAST, new JLabel("    "));
+		}
 		
 		panelBOTTOM.add(BorderLayout.WEST, panelLEFT);
         panelBOTTOM.add(BorderLayout.CENTER, new JSeparator(JSeparator.VERTICAL));
