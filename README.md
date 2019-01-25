@@ -82,7 +82,7 @@ Using this system, employers can keep track of the *Time-In/Time-Out (TITO)* of 
 
 ![15](https://github.com/chriscabang/javawookies/blob/master/doc/img/JavaVersion_02.png "15")
 
-16. Download and install the [**MySQL Connector (.JAR file)**](https://github.com/chriscabang/javawookies/raw/master/lib/mysql-connector-java-8.0.13.jar).
+16. Download the [**MySQL Connector (.JAR file)**](https://github.com/chriscabang/javawookies/raw/master/lib/mysql-connector-java-8.0.13.jar), and place this file in the same directory as your .java and .class files.
 
 17. Refer to **Steps 7 through 9** to re-open **System Information** > **Advanced system settings** > **Environment Variables...**.
 
