@@ -92,7 +92,7 @@ Using this system, employers can keep track of the *Time-In/Time-Out (TITO)* of 
 
 19. On the **Variable value:** text field, type in or copy-and-paste the directory/path to the folder where your *mysql-connector-java-8.0.13.jar* file is located, and click **OK**. Refer to the example below:
 
-    `C:\Users\Username\Desktop\Javawookies\master\lib\mysql-connector-java-8.0.13.jar`
+    `C:\Users\Username\Desktop\Javawookies\master\mysql-connector-java-8.0.13.jar`
 
 ![19](https://github.com/chriscabang/javawookies/blob/master/doc/img/CLASSPATH_02.png "19") ![19](https://github.com/chriscabang/javawookies/blob/master/doc/img/CLASSPATH_03.png "19")
 
