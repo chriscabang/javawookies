@@ -30,8 +30,10 @@ public class Employee extends JFrame implements ActionListener, MouseListener
 	Connection dbConn;
 	Statement sqlStmnt;
 	PreparedStatement ps;
-	String sqlQuery;
+	String sqlQuery, computerQuery;
 	ResultSet sqlRS;
+	
+	String hostname = "Unknown";
 
 	Employee(String nmbr)
 	{	buttonExit = new JButton("Log out");
@@ -47,6 +49,15 @@ public class Employee extends JFrame implements ActionListener, MouseListener
 		buttonDelete.addActionListener(this);
 		buttonDelete.setEnabled(false);
 		idnum = nmbr;
+		
+		/*--- CODES TO GET COMPUTER NAME ---*/
+		try
+		{	InetAddress addr;
+			addr = InetAddress.getLocalHost();
+			hostname = addr.getHostName();
+		}
+		catch (UnknownHostException ex) {}
+		/*--- End . CODES TO GET COMPUTER NAME ---*/
 						
 		try
 		{	dbConn = DriverManager.getConnection("jdbc:mysql://localhost:3306/timetracker", "admin", "adminuser");
@@ -282,14 +293,26 @@ public class Employee extends JFrame implements ActionListener, MouseListener
 			stampTime = sqltimeFormat.format(new Date(System.currentTimeMillis()));
 			
 			sqlQuery = "UPDATE timelogs SET date_out = ?, time_out = ? WHERE date_in = ? AND time_in = ? AND emp_id = ?";
+			computerQuery = "INSERT INTO logoutpc(emp_id, logout_pc, date_out, time_out) VALUES (?,?,?,?)";
 			try
-			{	ps = dbConn.prepareStatement(sqlQuery);
+			{	/*--- FOR timelogs SQL TABLE ---*/
+				ps = dbConn.prepareStatement(sqlQuery);
 				ps.setDate(1, java.sql.Date.valueOf(stampDate));
 				ps.setTime(2, new Time(sqltimeFormat.parse(stampTime).getTime()));
 				ps.setDate(3, java.sql.Date.valueOf(datein));
 				ps.setTime(4, new Time(sqltimeFormat.parse(timein).getTime()));
 				ps.setString(5, idnum);
 				ps.executeUpdate();
+				/*--- End . FOR timelogs SQL TABLE ---*/
+				
+				/*--- FOR loginpc SQL TABLE ---*/
+				ps = dbConn.prepareStatement(computerQuery);
+				ps.setString(1, idnum);
+				ps.setString(2, hostname);
+				ps.setDate(3, java.sql.Date.valueOf(stampDate));
+				ps.setTime(4, new Time(sqltimeFormat.parse(stampTime).getTime()));
+				ps.executeUpdate();
+				/*--- FOR loginpc SQL TABLE ---*/
 				
 				tableModel.setValueAt(dateFormat.format(java.sql.Date.valueOf(stampDate)), 0, 3);
 				tableModel.setValueAt(timeFormat.format(new Time(sqltimeFormat.parse(stampTime).getTime())), 0, 4);
@@ -308,22 +331,25 @@ public class Employee extends JFrame implements ActionListener, MouseListener
 			stampDate = sqldateFormat.format(new Date(System.currentTimeMillis()));
 			stampTime = sqltimeFormat.format(new Date(System.currentTimeMillis()));
 			
-			String hostname = "Unknown";
+			sqlQuery = "INSERT INTO timelogs (emp_id, date_in, time_in, date_out, time_out) VALUES (?, ?, ?, '0000-00-00', '00:00:00.000000')";
+			computerQuery = "INSERT INTO loginpc(emp_id, login_pc, date_in, time_in) VALUES (?,?,?,?)";
 			try
-			{	InetAddress addr;
-				addr = InetAddress.getLocalHost();
-				hostname = addr.getHostName();
-			}
-			catch (UnknownHostException ex) {}
-			
-			sqlQuery = "INSERT INTO timelogs (emp_id, date_in, time_in, date_out, time_out, computer_name) VALUES (?, ?, ?, '0000-00-00', '00:00:00.000000', ?)";
-			try
-			{	ps = dbConn.prepareStatement(sqlQuery);
+			{	/*--- FOR timelogs SQL TABLE ---*/
+				ps = dbConn.prepareStatement(sqlQuery);
 				ps.setString(1, idnum);
 				ps.setDate(2, java.sql.Date.valueOf(stampDate));
 				ps.setTime(3, new Time(sqltimeFormat.parse(stampTime).getTime()));
-				ps.setString(4, hostname);
 				ps.executeUpdate();
+				/*--- End . FOR timelogs SQL TABLE ---*/
+				
+				/*--- FOR loginpc SQL TABLE ---*/
+				ps = dbConn.prepareStatement(computerQuery);
+				ps.setString(1, idnum);
+				ps.setString(2, hostname);
+				ps.setDate(3, java.sql.Date.valueOf(stampDate));
+				ps.setTime(4, new Time(sqltimeFormat.parse(stampTime).getTime()));
+				ps.executeUpdate();
+				/*--- FOR loginpc SQL TABLE ---*/
 				
 				record[0] = idnum;
 				record[1] = dateFormat.format(java.sql.Date.valueOf(stampDate));
