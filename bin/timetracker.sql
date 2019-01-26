@@ -22,6 +22,8 @@ SET time_zone = "+00:00";
 -- Database: `timetracker`
 --
 
+CREATE DATABASE `timetracker`;
+
 -- --------------------------------------------------------
 
 --
