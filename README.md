@@ -2,13 +2,24 @@
 This ***README*** file contains all the information about our project: a time tracking system that uses **Java SE** *(Standard Edition)* technology. In *this repository*, you will understand what this system is all about and you will also find the *instructions on how to get this application up and running on your local machine* for further development and/or testing.
 
 # Table of Contents
+- **About JavaWookies**
 - **Project Overview**
 - **Prerequisites**
 - **System Requirements**
 - **Setup Guide**
 - **Development and Release Dates**
 - **Notes/Updates**
-- **About JavaWookies**
+
+# About JavaWookies
+Our team consists of:
+
+**Member** | **Username**
+:--- | :---
+Benjie Fuentes | [benjiefuentes](https://github.com/benjiefuentes)
+JM Hortillosa | [jmhort](https://github.com/jmhort)
+Loebel Busis | [bellabelle](https://github.com/bellabelle)
+Edneil Quitara | [edneil224](https://github.com/edneil224)
+Juneil Gamallo | [gamalloneil](https://github.com/gamalloneil)
 
 # Project Overview
 
@@ -136,14 +147,3 @@ Using this system, employers can keep track of the *Time-In/Time-Out (TITO)* of 
 # Notes/Updates
 - "Login.java" can be found under "src" folder.
 - "Admin.java" is not yet linked to "Login.java".
-
-# About JavaWookies
-Our team consists of:
-
-**Member** | **Username**
-:--- | :---
-Benjie Fuentes | [benjiefuentes](https://github.com/benjiefuentes)
-JM Hortillosa | [jmhort](https://github.com/jmhort)
-Loebel Busis | [bellabelle](https://github.com/bellabelle)
-Edneil Quitara | [edneil224](https://github.com/edneil224)
-Juneil Gamallo | [gamalloneil](https://github.com/gamalloneil)
