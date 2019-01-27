@@ -1,5 +1,4 @@
-import javax.swing.table.TableModel;
-import javax.swing.table.TableRowSorter;
+import javax.swing.table.DefaultTableCellRenderer;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -36,29 +35,36 @@ public class Admin extends JFrame implements ActionListener
 	ImageIcon logoDeleteAll = new ImageIcon("img/delete all user logo.png"), logoDeleteAllClicked = new ImageIcon("img/delete all user clicked logo.png");
 	Image image, newimg;
 	
-	DefaultTableModel tableModel = new DefaultTableModel();
-	JTable table = new JTable(tableModel);
 	String[] columnEmployee = {"Complete Name", "ID #", "Age", "Gender", "Address"}, record = new String[5];
+	DefaultTableModel tableModel = new DefaultTableModel();
+	JTable table = new JTable(tableModel);	
+	
 	TableColumnModel colModel;
 	
     JLabel lblVerify = new JLabel("");
 	JTextField tfFname = new JTextField(20), tfMname = new JTextField(20), tfLname = new JTextField(20), tfAge, tfAddress = new JTextField(20);
 	JPasswordField pfPasscode = new JPasswordField(15), pfVerifyPasscode = new JPasswordField(15);
-	JButton btnClearAll;
+	JButton btnClearAll, btnPurgeINdata = new JButton(), btnPurgeOutdata = new JButton();
 	String genderList[]={"-Select-","Male","Female"}, noFname; 
 	JComboBox<String> cbGender = new JComboBox<>(genderList);
 	
 	/*--- mostly for table Login PC user ---*/
 	JLabel lblLogPC, lblSystemPC, lblUsersLogHeader;
-	JPanel panelLIPC, panelLogPC, panelUsersLogHeader, panelTableLoggedPC, panelGapTable, panelwithGAP, panelwithSeparator, panelTOPTOP, panelBottomBorder;
+	JPanel panelLIPC, panelLogPC, panelUsersLogHeader, panelTableLoggedPC, panelGapTable, panelwithGAP, panelwithSeparator, panelTOPTOP, panelBottomBorder, panelLabelLoggedPC;
+	JPanel panelLabelLogoutPC, panelTableLogoutPC;
 	
 	SimpleDateFormat dateFormat = new SimpleDateFormat("MMM. dd, yyyy");
 	SimpleDateFormat timeFormat = new SimpleDateFormat("hh:mm:ss a");
 	
 	DefaultTableModel tablemodelLoggedPC = new DefaultTableModel();
 	JTable tableLoggedPC = new JTable(tablemodelLoggedPC);
-	String[] columnUsersLoggedPC = {"Name", "ID #", "Date In", "Time In", "Date Out", "Time Out"}, recordLoggedPC = new String[6];
+	String[] columnLoginPC = {"Name", "ID #", "Date In", "Time In"}, recordLoginPC = new String[4];
 	TableColumnModel colmodelLoginPC;
+	
+	DefaultTableModel tablemodelLogoutPC = new DefaultTableModel();
+	JTable tableLogoutPC = new JTable(tablemodelLogoutPC);
+	String[] columnLogoutPC = {"Name", "ID #", "Date Out", "Time Out"}, recordLogoutPC = new String[4];
+	TableColumnModel colmodelLogoutPC;
 	
 	Connection dbConn;
 	Statement sqlStmnt, fullnameStmnt;
@@ -124,6 +130,10 @@ public class Admin extends JFrame implements ActionListener
 		});
 		lblSettings.setCursor(new Cursor(Cursor.HAND_CURSOR));
 		lblSettings.setToolTipText("Account Settings: Reset Password");
+		lblSettings.addMouseListener( new MouseAdapter()
+		{	public void mouseClicked(MouseEvent e)
+			{	JOptionPane.showMessageDialog(null, "COMING SOON!");	}
+		});
 /*--- End . SETTINGS ICON UPPER RIGHT HAND CORNER ---*/
 		
 /*--- SEARCH ICON ---*/
@@ -149,6 +159,10 @@ public class Admin extends JFrame implements ActionListener
 		});
 		lblSearch.setCursor(new Cursor(Cursor.HAND_CURSOR));
 		lblSearch.setToolTipText("Search");
+		lblSearch.addMouseListener( new MouseAdapter()
+		{	public void mouseClicked(MouseEvent e)
+			{	JOptionPane.showMessageDialog(null, "COMING SOON!");	}
+		});
 /*--- End . SEARCH ICON ---*/
 
         tfSearch = new JTextField("Search employee", 20);
@@ -457,9 +471,6 @@ public class Admin extends JFrame implements ActionListener
 		panelTOP.add(BorderLayout.WEST, lblAdmin);
 		panelTOP.add(BorderLayout.EAST, panelUpperRightCorner);
 		
-		
-
-
 		int rscount = 0;
 		
 		String hostname = "UNKNOWN";
@@ -475,7 +486,7 @@ public class Admin extends JFrame implements ActionListener
 		}
 		catch (UnknownHostException ex) {}
 		
-		lblUsersLogHeader = new JLabel("* Users / Employees who logged in to this PC *");
+		lblUsersLogHeader = new JLabel("<HTML><i>***  USERS / EMPLOYEES  WHO  LOGGED  IN  AND  LOGGED  OUT  TO  THIS  PC  ***</i></HTML>");
 		
         panelLIPC = new JPanel(); panelLIPC.setLayout(new BorderLayout(1,1)); panelLIPC.setBackground(Color.lightGray);
 		panelLogPC = new JPanel(); panelLogPC.setLayout(new BorderLayout(1,1)); panelLogPC.setBackground(Color.lightGray);
@@ -485,105 +496,214 @@ public class Admin extends JFrame implements ActionListener
 		panelwithGAP = new JPanel(); panelwithGAP.setLayout(new BorderLayout(1,1)); panelwithGAP.setBackground(Color.lightGray);
 		panelwithSeparator = new JPanel(); panelwithSeparator.setLayout(new BorderLayout(1,1)); panelwithSeparator.setBackground(Color.lightGray);
 		panelTOPTOP = new JPanel(); panelTOPTOP.setLayout(new BorderLayout(1,1)); panelTOPTOP.setBackground(Color.lightGray);
+		panelLabelLoggedPC = new JPanel(); panelLabelLoggedPC.setLayout(new BorderLayout(1,1)); panelLabelLoggedPC.setBackground(Color.lightGray);
+		panelLabelLogoutPC = new JPanel(); panelLabelLogoutPC.setLayout(new BorderLayout(1,1)); panelLabelLogoutPC.setBackground(Color.lightGray);
+		panelTableLogoutPC = new JPanel(); panelTableLogoutPC.setLayout(new BorderLayout(1,1)); panelTableLogoutPC.setBackground(Color.lightGray);
 				
 		panelLogPC.add(BorderLayout.WEST, lblLogPC);
 		panelLogPC.add(BorderLayout.CENTER, lblSystemPC);
 		
 		panelUsersLogHeader.add(BorderLayout.NORTH, new JLabel(" "));
-		panelUsersLogHeader.add(BorderLayout.WEST, new JLabel("                                                "));
+		panelUsersLogHeader.add(BorderLayout.WEST, new JLabel("                                                      "));
 		panelUsersLogHeader.add(BorderLayout.CENTER, lblUsersLogHeader);
-		
+		panelUsersLogHeader.add(BorderLayout.SOUTH, new JLabel(" "));
+/*--- PANEL FOR TABLE LOGINPC ---*/		
 		/*--- TABLE FOR LOGGED IN PC ---*/
-		tablemodelLoggedPC.setColumnIdentifiers(columnUsersLoggedPC);
+		tablemodelLoggedPC.setColumnIdentifiers(columnLoginPC);
 		tableLoggedPC.setAutoResizeMode(JTable.AUTO_RESIZE_ALL_COLUMNS);
 		
 		colmodelLoginPC = tableLoggedPC.getColumnModel();
 		colmodelLoginPC.getColumn(0).setPreferredWidth(50);    
-		colmodelLoginPC.getColumn(1).setPreferredWidth(8);
+		colmodelLoginPC.getColumn(1).setPreferredWidth(6);
 		colmodelLoginPC.getColumn(2).setPreferredWidth(18);
 		colmodelLoginPC.getColumn(3).setPreferredWidth(13);
-		colmodelLoginPC.getColumn(4).setPreferredWidth(18);
-		colmodelLoginPC.getColumn(5).setPreferredWidth(13);
 		
-		tableLoggedPC.getTableHeader().setReorderingAllowed(false);
-		tableLoggedPC.setDefaultEditor(Object.class, null); // making the table uneditable
-		tableLoggedPC.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+		DefaultTableCellRenderer centerRenderer = new DefaultTableCellRenderer();
+		centerRenderer.setHorizontalAlignment( SwingConstants.CENTER );
+		tableLoggedPC.getColumnModel().getColumn(1).setCellRenderer( centerRenderer );
+		
+		//tableLoggedPC.getTableHeader().setReorderingAllowed(false);
+		//tableLoggedPC.setDefaultEditor(Object.class, null); // making the table uneditable
+		//tableLoggedPC.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 		
 		try
 		{	dbConn = DriverManager.getConnection("jdbc:mysql://localhost:3306/timetracker", "admin", "adminuser");
 			fullnameStmnt = dbConn.createStatement();
 			sqlStmnt = dbConn.createStatement();
-			sqlQuery = "SELECT * FROM timelogs WHERE computer_name = '" + hostname + "' ORDER BY date_in DESC, time_in DESC";
+			sqlQuery = "SELECT * FROM loginpc WHERE login_pc = '" + hostname + "' ORDER BY date_in DESC, time_in DESC";
 			sqlRS = sqlStmnt.executeQuery(sqlQuery);
 			
 			while(sqlRS.next())
-			{	rscount++;
-				recordLoggedPC[1] = sqlRS.getString("emp_id");
+			{	rscount++; //-> to count how many rows returned by resultset
+				recordLoginPC[1] = sqlRS.getString("emp_id");
 				
 					/*--- query for fullname ---*/
-					fullnameQuery  = "SELECT * FROM employees WHERE emp_id = '" + recordLoggedPC[1] + "'";
+					fullnameQuery  = "SELECT * FROM employees WHERE emp_id = '" + recordLoginPC[1] + "'";
 					fullnameRS = fullnameStmnt.executeQuery(fullnameQuery);
 					fullnameRS.next();
 					if(fullnameRS.getString("emp_mname").length()!=0)
 					{	if(fullnameRS.getString("emp_fname").length()!=0)
 						{	if(fullnameRS.getString("emp_lname").length()!=0)
-								recordLoggedPC[0] = fullnameRS.getString("emp_lname") + ", " + fullnameRS.getString("emp_fname") + " " + fullnameRS.getString("emp_mname").substring(0, 1) + ".";
+								recordLoginPC[0] = fullnameRS.getString("emp_lname") + ", " + fullnameRS.getString("emp_fname") + " " + fullnameRS.getString("emp_mname").substring(0, 1) + ".";
 							else
-								recordLoggedPC[0] = fullnameRS.getString("emp_fname") + " " + fullnameRS.getString("emp_mname").substring(0, 1) + ".";
+								recordLoginPC[0] = fullnameRS.getString("emp_fname") + " " + fullnameRS.getString("emp_mname").substring(0, 1) + ".";
 						}
 						else
 						{	if(fullnameRS.getString("emp_lname").length()!=0)
-								recordLoggedPC[0] = fullnameRS.getString("emp_lname") + ", " + fullnameRS.getString("emp_mname").substring(0, 1) + ".";
+								recordLoginPC[0] = fullnameRS.getString("emp_lname") + ", " + fullnameRS.getString("emp_mname").substring(0, 1) + ".";
 							else
-								recordLoggedPC[0] = fullnameRS.getString("emp_mname").substring(0, 1) + ".";
+								recordLoginPC[0] = fullnameRS.getString("emp_mname").substring(0, 1) + ".";
 						}
 					}
 					else
 					{	if(fullnameRS.getString("emp_fname").length()!=0)
 						{	if(fullnameRS.getString("emp_lname").length()!=0)
-								recordLoggedPC[0] = fullnameRS.getString("emp_lname") + ", " + fullnameRS.getString("emp_fname");
+								recordLoginPC[0] = fullnameRS.getString("emp_lname") + ", " + fullnameRS.getString("emp_fname");
 							else
-								recordLoggedPC[0] = fullnameRS.getString("emp_fname");
+								recordLoginPC[0] = fullnameRS.getString("emp_fname");
 						}
 						else
 						{	if(fullnameRS.getString("emp_lname").length()!=0)
-								recordLoggedPC[0] = fullnameRS.getString("emp_lname");
+								recordLoginPC[0] = fullnameRS.getString("emp_lname");
 							else
-								recordLoggedPC[0] = "";
+								recordLoginPC[0] = "";
 						}
 					}
 					/*--- End . query for fullname ---*/
 				
-				recordLoggedPC[2] = dateFormat.format(sqlRS.getDate("date_in"));
-				recordLoggedPC[3] = timeFormat.format(sqlRS.getTime("time_in"));
+				recordLoginPC[2] = dateFormat.format(sqlRS.getDate("date_in"));
+				recordLoginPC[3] = timeFormat.format(sqlRS.getTime("time_in"));
 				
-				if(sqlRS.getString("date_out").equals("0000-00-00"))
-				{	recordLoggedPC[4] = "";
-					recordLoggedPC[5] = "";
-				}
-				else
-				{	recordLoggedPC[4] = dateFormat.format(sqlRS.getDate("date_out"));
-					recordLoggedPC[5] = timeFormat.format(sqlRS.getTime("time_out"));
-				}
-				
-				tablemodelLoggedPC.addRow(recordLoggedPC);
+				tablemodelLoggedPC.addRow(recordLoginPC);
 			}
 		}
 		catch(Exception error) { error.printStackTrace(); return; }
 		
-		tableLoggedPC.setPreferredScrollableViewportSize(new Dimension(520, 96));
+		tableLoggedPC.setPreferredScrollableViewportSize(new Dimension(370, 96));
 		tableLoggedPC.setFillsViewportHeight(true);
 		tableLoggedPC.setEnabled(false);
 		/*--- End . TABLE FOR LOGGED IN PC ---*/
+		/*--- HYPERLINK: purge loginpc table ---*/
+		btnPurgeINdata.setText("<HTML><FONT color=\"#000099\"><U>Purge data?</U></FONT></HTML>");
+		btnPurgeINdata.setBorderPainted(false);
+		btnPurgeINdata.setOpaque(false);
+		btnPurgeINdata.setBackground(Color.lightGray);
+		btnPurgeINdata.setToolTipText("Purge employees under login pc information.");
+		btnPurgeINdata.addActionListener(this);
+		btnPurgeINdata.setCursor(new Cursor(Cursor.HAND_CURSOR));
+		/*--- End . HYPERLINK: purge loginpc table ---*/
 		
+		panelLabelLoggedPC.add(BorderLayout.WEST, new JLabel("  " + rscount +" results found."));
+		if(rscount!=0)
+			panelLabelLoggedPC.add(BorderLayout.EAST, btnPurgeINdata);
+		
+		panelTableLoggedPC.add(BorderLayout.NORTH, new JLabel("<HTML><FONT color=\"#038410\">&ensp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&ensp;---[</FONT><FONT color=\"#587835\">  LOG IN  </FONT><FONT color=\"#038410\">]---</FONT></HTML>"));
 		panelTableLoggedPC.add(BorderLayout.WEST, new JLabel("  "));
 		panelTableLoggedPC.add(BorderLayout.CENTER, new JScrollPane(tableLoggedPC));
 		panelTableLoggedPC.add(BorderLayout.EAST, new JLabel("  "));
-		panelTableLoggedPC.add(BorderLayout.SOUTH, new JLabel("  " + rscount +" results found."));
+		panelTableLoggedPC.add(BorderLayout.SOUTH, panelLabelLoggedPC);
+/*--- End . PANEL FOR TABLE LOGINPC ---*/
+/*--- PANEL FOR TABLE LOGOUTPC ---*/		
+		/*--- TABLE FOR LOGGED IN PC ---*/
+		tablemodelLogoutPC.setColumnIdentifiers(columnLogoutPC);
+		tableLogoutPC.setAutoResizeMode(JTable.AUTO_RESIZE_ALL_COLUMNS);
 		
-		panelGapTable.add(BorderLayout.CENTER, panelTableLoggedPC);
-        //panelGapTable.add(BorderLayout.SOUTH, new JLabel(" "));
+		colmodelLogoutPC = tableLogoutPC.getColumnModel();
+		colmodelLogoutPC.getColumn(0).setPreferredWidth(50);    
+		colmodelLogoutPC.getColumn(1).setPreferredWidth(6);
+		colmodelLogoutPC.getColumn(2).setPreferredWidth(18);
+		colmodelLogoutPC.getColumn(3).setPreferredWidth(13);
 		
+		DefaultTableCellRenderer centerRenderer2 = new DefaultTableCellRenderer();
+		centerRenderer2.setHorizontalAlignment( SwingConstants.CENTER );
+		tableLogoutPC.getColumnModel().getColumn(1).setCellRenderer( centerRenderer2 );
+		
+		//tableLogoutPC.getTableHeader().setReorderingAllowed(false);
+		//tableLogoutPC.setDefaultEditor(Object.class, null); // making the table uneditable
+		//tableLogoutPC.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+		
+		try
+		{	dbConn = DriverManager.getConnection("jdbc:mysql://localhost:3306/timetracker", "admin", "adminuser");
+			fullnameStmnt = dbConn.createStatement();
+			sqlStmnt = dbConn.createStatement();
+			sqlQuery = "SELECT * FROM logoutpc WHERE logout_pc = '" + hostname + "' ORDER BY date_out DESC, time_out DESC";
+			sqlRS = sqlStmnt.executeQuery(sqlQuery);
+			rscount = 0;
+			
+			while(sqlRS.next())
+			{	rscount++; //-> to count how many rows returned by resultset
+				recordLogoutPC[1] = sqlRS.getString("emp_id");
+				
+					/*--- query for fullname ---*/
+					fullnameQuery  = "SELECT * FROM employees WHERE emp_id = '" + recordLogoutPC[1] + "'";
+					fullnameRS = fullnameStmnt.executeQuery(fullnameQuery);
+					fullnameRS.next();
+					if(fullnameRS.getString("emp_mname").length()!=0)
+					{	if(fullnameRS.getString("emp_fname").length()!=0)
+						{	if(fullnameRS.getString("emp_lname").length()!=0)
+								recordLogoutPC[0] = fullnameRS.getString("emp_lname") + ", " + fullnameRS.getString("emp_fname") + " " + fullnameRS.getString("emp_mname").substring(0, 1) + ".";
+							else
+								recordLogoutPC[0] = fullnameRS.getString("emp_fname") + " " + fullnameRS.getString("emp_mname").substring(0, 1) + ".";
+						}
+						else
+						{	if(fullnameRS.getString("emp_lname").length()!=0)
+								recordLogoutPC[0] = fullnameRS.getString("emp_lname") + ", " + fullnameRS.getString("emp_mname").substring(0, 1) + ".";
+							else
+								recordLogoutPC[0] = fullnameRS.getString("emp_mname").substring(0, 1) + ".";
+						}
+					}
+					else
+					{	if(fullnameRS.getString("emp_fname").length()!=0)
+						{	if(fullnameRS.getString("emp_lname").length()!=0)
+								recordLogoutPC[0] = fullnameRS.getString("emp_lname") + ", " + fullnameRS.getString("emp_fname");
+							else
+								recordLogoutPC[0] = fullnameRS.getString("emp_fname");
+						}
+						else
+						{	if(fullnameRS.getString("emp_lname").length()!=0)
+								recordLogoutPC[0] = fullnameRS.getString("emp_lname");
+							else
+								recordLogoutPC[0] = "";
+						}
+					}
+					/*--- End . query for fullname ---*/
+				
+				recordLogoutPC[2] = dateFormat.format(sqlRS.getDate("date_out"));
+				recordLogoutPC[3] = timeFormat.format(sqlRS.getTime("time_out"));
+				
+				tablemodelLogoutPC.addRow(recordLogoutPC);
+			}
+		}
+		catch(Exception error) { error.printStackTrace(); return; }
+		
+		tableLogoutPC.setPreferredScrollableViewportSize(new Dimension(370, 96));
+		tableLogoutPC.setFillsViewportHeight(true);
+		tableLogoutPC.setEnabled(false);
+		/*--- End . TABLE FOR LOGGED IN PC ---*/
+		/*--- HYPERLINK: purge logoutpc table ---*/
+		btnPurgeOutdata.setText("<HTML><FONT color=\"#000099\"><U>Purge data?</U></FONT></HTML>");
+		btnPurgeOutdata.setBorderPainted(false);
+		btnPurgeOutdata.setOpaque(false);
+		btnPurgeOutdata.setBackground(Color.lightGray);
+		btnPurgeOutdata.setToolTipText("Purge employees under logout pc information.");
+		btnPurgeOutdata.addActionListener(this);
+		btnPurgeOutdata.setCursor(new Cursor(Cursor.HAND_CURSOR));
+		/*--- End . HYPERLINK: purge logoutpc table ---*/
+		
+		panelLabelLogoutPC.add(BorderLayout.WEST, new JLabel("  " + rscount +" results found."));
+		if(rscount!=0)
+			panelLabelLogoutPC.add(BorderLayout.EAST, btnPurgeOutdata);
+		
+		panelTableLogoutPC.add(BorderLayout.NORTH, new JLabel("<HTML><FONT color=\"#4725AF\">&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&ensp;---[</FONT><FONT color=\"#76207B\">  LOG OUT  </FONT><FONT color=\"#4725AF\">]---</FONT></HTML>"));
+		panelTableLogoutPC.add(BorderLayout.WEST, new JLabel("  "));
+		panelTableLogoutPC.add(BorderLayout.CENTER, new JScrollPane(tableLogoutPC));
+		panelTableLogoutPC.add(BorderLayout.EAST, new JLabel("  "));
+		panelTableLogoutPC.add(BorderLayout.SOUTH, panelLabelLogoutPC);
+/*--- End . PANEL FOR TABLE LOGOUTPC ---*/
+
+		panelGapTable.add(BorderLayout.WEST, panelTableLoggedPC);
+		panelGapTable.add(BorderLayout.EAST, panelTableLogoutPC); // -> PANEL FOR TABLE LOGOUTPC
+        
 		/*--- MAIN PANEL FOR LOGGED IN PC GROUP ---*/
 		panelLIPC.add(BorderLayout.NORTH, panelLogPC);
         panelLIPC.add(BorderLayout.CENTER, panelUsersLogHeader);
@@ -623,16 +743,8 @@ public class Admin extends JFrame implements ActionListener
 		panelBottom.add(BorderLayout.WEST, panelButtonLEFT);
 		panelBottom.add(BorderLayout.EAST, panelButtonRIGHT);
 		
-		/*--- TABLE SORTER ---*/
-		TableRowSorter<TableModel> sorter = new TableRowSorter<TableModel>(table.getModel());
-		table.setRowSorter(sorter);
-
-        List<RowSorter.SortKey> sortKeys = new ArrayList<>(25);
-        sortKeys.add(new RowSorter.SortKey(0, SortOrder.ASCENDING));
-        sorter.setSortKeys(sortKeys);
-		/*--- End . TABLE SORTER ---*/
-		
-        panelEmpTableButtons.add(BorderLayout.NORTH, new JScrollPane(table)); 
+		panelEmpTableButtons.add(BorderLayout.NORTH, new JScrollPane(table));
+		table.setAutoCreateRowSorter(true); // -> table sorter
         panelEmpTableButtons.add(BorderLayout.SOUTH, panelBottom);
 		
 		panelBottomBorder.add(BorderLayout.CENTER, panelMID); 
@@ -757,10 +869,8 @@ public class Admin extends JFrame implements ActionListener
 			}
 		}
 		else if(source == btnTimeLogs)
-		{	
-			if(table.getSelectedRow()!=-1)
-			{
-				AdminEmpDetails aed = new AdminEmpDetails(table.getValueAt(table.getSelectedRow(), 1).toString());
+		{	if(table.getSelectedRow()!=-1)
+			{	AdminEmpDetails aed = new AdminEmpDetails(table.getValueAt(table.getSelectedRow(), 1).toString());
 			
 				aed.pack();
 				aed.setLocationRelativeTo(null);
@@ -771,6 +881,8 @@ public class Admin extends JFrame implements ActionListener
 				dispose();
 			}
 		}
+		else if(source == btnPurgeINdata || source == btnPurgeOutdata || source == btnEdit)
+		{	JOptionPane.showMessageDialog(null, "COMING SOON!");	}
 	}
 	
 	public void eraseAll()
