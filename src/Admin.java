@@ -535,10 +535,11 @@ public class Admin extends JFrame implements ActionListener
 			
 			while(sqlRS.next())
 			{	rscount++; //-> to count how many rows returned by resultset
+				recordLoginPC[0] = sqlRS.getString("emp_name");
 				recordLoginPC[1] = sqlRS.getString("emp_id");
 				
 					/*--- query for fullname ---*/
-					fullnameQuery  = "SELECT * FROM employees WHERE emp_id = '" + recordLoginPC[1] + "'";
+				/*	fullnameQuery  = "SELECT * FROM employees WHERE emp_id = '" + recordLoginPC[1] + "'";
 					fullnameRS = fullnameStmnt.executeQuery(fullnameQuery);
 					fullnameRS.next();
 					if(fullnameRS.getString("emp_mname").length()!=0)
@@ -569,6 +570,7 @@ public class Admin extends JFrame implements ActionListener
 								recordLoginPC[0] = "";
 						}
 					}
+					*/
 					/*--- End . query for fullname ---*/
 				
 				recordLoginPC[2] = dateFormat.format(sqlRS.getDate("date_in"));
@@ -632,10 +634,11 @@ public class Admin extends JFrame implements ActionListener
 			
 			while(sqlRS.next())
 			{	rscount++; //-> to count how many rows returned by resultset
+				recordLogoutPC[0] = sqlRS.getString("emp_name");
 				recordLogoutPC[1] = sqlRS.getString("emp_id");
 				
 					/*--- query for fullname ---*/
-					fullnameQuery  = "SELECT * FROM employees WHERE emp_id = '" + recordLogoutPC[1] + "'";
+				/*	fullnameQuery  = "SELECT * FROM employees WHERE emp_id = '" + recordLogoutPC[1] + "'";
 					fullnameRS = fullnameStmnt.executeQuery(fullnameQuery);
 					fullnameRS.next();
 					if(fullnameRS.getString("emp_mname").length()!=0)
@@ -666,6 +669,7 @@ public class Admin extends JFrame implements ActionListener
 								recordLogoutPC[0] = "";
 						}
 					}
+				*/
 					/*--- End . query for fullname ---*/
 				
 				recordLogoutPC[2] = dateFormat.format(sqlRS.getDate("date_out"));
