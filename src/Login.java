@@ -210,7 +210,7 @@ public class Login extends JFrame implements ActionListener{
 				if(sqlRS.next())
 					close();
 				else
-				{	JOptionPane.showMessageDialog(null, "NO RECORD FOUND!", "ALERT", JOptionPane.ERROR_MESSAGE); // error dialog box NOTE: need better error message
+				{	JOptionPane.showMessageDialog(null, "ID number / passcode is invalid!", "ALERT", JOptionPane.ERROR_MESSAGE); // error dialog box NOTE: need better error message
 					tfIDnumber.setText(""); tfIDnumber.requestFocus(); // set focus on tfIDnumber after error message prompted
 					tfPasscode.setText("");
 					return;
