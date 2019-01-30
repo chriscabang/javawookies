@@ -127,7 +127,7 @@ public class AdminEmpDetails extends JFrame implements ActionListener
 		lblBack.setToolTipText("Back to Admin page");
 		lblBack.addMouseListener( new MouseAdapter()
 		{	public void mouseClicked(MouseEvent e)
-			{	tableComputer.clearSelection(); tableTimeLogs.clearSelection(); panelMAIN.requestFocusInWindow();
+			{	//tableComputer.clearSelection(); tableTimeLogs.clearSelection(); panelMAIN.requestFocusInWindow();
 				close();
 				Admin adm = new Admin();
 				adm.pack();
@@ -143,7 +143,7 @@ public class AdminEmpDetails extends JFrame implements ActionListener
 		panelMAIN = new JPanel(); panelMAIN.setLayout(new BorderLayout(1,1)); panelMAIN.setBackground(Color.lightGray);
 		panelMAIN.addMouseListener( new MouseAdapter()
 		{	public void mouseClicked(MouseEvent e)
-			{	tableComputer.clearSelection();
+			{	//tableComputer.clearSelection();
 				tableTimeLogs.clearSelection();
 				panelMAIN.requestFocusInWindow();
 			}
@@ -182,24 +182,24 @@ public class AdminEmpDetails extends JFrame implements ActionListener
         panelPhoto.add(BorderLayout.CENTER, lblPhoto);
 		
 		/*--- TABLE: LOGIN DETAILS ---*/
-		tableComputer.addMouseListener( new MouseAdapter()
-		{	public void mouseClicked(MouseEvent e)
-			{	tableComputer.requestFocus();
-				tableTimeLogs.clearSelection();
-			}
-		});
-		tableModelComputer.setColumnIdentifiers(columnComputerDetails);
-		tableComputer.setAutoResizeMode(JTable.AUTO_RESIZE_ALL_COLUMNS);
-		tableComputer.getTableHeader().setReorderingAllowed(false);
-		tableComputer.setDefaultEditor(Object.class, null); // making the table uneditable
-		tableComputer.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+//		tableComputer.addMouseListener( new MouseAdapter()
+//		{	public void mouseClicked(MouseEvent e)
+//			{	tableComputer.requestFocus();
+//				tableTimeLogs.clearSelection();
+//			}
+//		});
+//		tableModelComputer.setColumnIdentifiers(columnComputerDetails);
+//		tableComputer.setAutoResizeMode(JTable.AUTO_RESIZE_ALL_COLUMNS);
+//		tableComputer.getTableHeader().setReorderingAllowed(false);
+//		tableComputer.setDefaultEditor(Object.class, null); // making the table uneditable
+//		tableComputer.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 		/*--- End . TABLE: LOGIN DETAILS ---*/
 		
 		/*--- TABLE: TIME LOGS ---*/
 		tableTimeLogs.addMouseListener( new MouseAdapter()
 		{	public void mouseClicked(MouseEvent e)
 			{	tableTimeLogs.requestFocus();
-				tableComputer.clearSelection();
+				//tableComputer.clearSelection();
 			}
 		});
 		tableModelTimeLogs.setColumnIdentifiers(columnTimeLogs);
@@ -218,11 +218,11 @@ public class AdminEmpDetails extends JFrame implements ActionListener
 			while(sqlRS.next())
 			{	count = 1;
 				/*--- TABLE: LOGIN DETAILS ---*/
-				rcrd[0] = sqlRS.getString("computer_name");
-				rcrd[1] = dateFormat.format(sqlRS.getDate("date_in"));
-				rcrd[2] = timeFormat.format(sqlRS.getTime("time_in"));
+				//rcrd[0] = sqlRS.getString("computer_name");
+				//rcrd[1] = dateFormat.format(sqlRS.getDate("date_in"));
+				//rcrd[2] = timeFormat.format(sqlRS.getTime("time_in"));
 				
-				tableModelComputer.addRow(rcrd);
+				//tableModelComputer.addRow(rcrd);
 				/*--- End . TABLE: LOGIN DETAILS ---*/
 				
 				/*--- TABLE: TIME LOGS ---*/
@@ -244,8 +244,8 @@ public class AdminEmpDetails extends JFrame implements ActionListener
 		}
 		catch(Exception error){ error.printStackTrace(); return; }
 		
-		tableComputer.setPreferredScrollableViewportSize(new Dimension(320, 63));
-		tableComputer.setFillsViewportHeight(true);
+//		tableComputer.setPreferredScrollableViewportSize(new Dimension(320, 63));
+//		tableComputer.setFillsViewportHeight(true);
 		
 		tableTimeLogs.setPreferredScrollableViewportSize(new Dimension(330, 60));
 		tableTimeLogs.setFillsViewportHeight(true);
@@ -312,7 +312,7 @@ public class AdminEmpDetails extends JFrame implements ActionListener
         panelLogoLoginDet.add(BorderLayout.CENTER, lblLoginDetails);
         
 		panelLoginDetails.add(BorderLayout.NORTH, panelLogoLoginDet);
-        panelLoginDetails.add(BorderLayout.CENTER, new JScrollPane(tableComputer));
+        //panelLoginDetails.add(BorderLayout.CENTER, new JScrollPane(tableComputer));
 		panelLoginDetails.add(BorderLayout.SOUTH, new JLabel(" "));
 		panelLoginDetails.add(BorderLayout.WEST, new JLabel(" "));
 		panelLoginDetails.add(BorderLayout.EAST, new JLabel(" "));
