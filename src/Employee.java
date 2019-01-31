@@ -4,7 +4,6 @@ import java.awt.Font;
 import com.mysql.cj.jdbc.exceptions.*;
 import java.sql.*;
 import javax.swing.table.DefaultTableModel;
-
 import java.util.Date;
 import java.text.SimpleDateFormat;
 import java.awt.Color;
@@ -25,7 +24,7 @@ public class Employee extends JFrame implements ActionListener, MouseListener
 	DefaultTableModel tableModel = new DefaultTableModel();
 	JTable tableLogtime = new JTable(tableModel);
 	String[] columnNames = {"ID Number", "Date In", "Time In", "Date Out", "Time Out"}, record = new String[5];
-	String stampDate, stampTime, datein, timein, idnum, sqlName, namename;
+	String stampDate, stampTime, datein, timein, idnum, sqlName, namename, insertsqlname;
 	
 	Connection dbConn;
 	Statement sqlStmnt;
@@ -66,43 +65,8 @@ public class Employee extends JFrame implements ActionListener, MouseListener
 			sqlRS = sqlStmnt.executeQuery(sqlQuery);
 			sqlRS.first();
 		
-			if(sqlRS.getString("emp_mname").length()!=0)
-			{	if(sqlRS.getString("emp_fname").length()!=0)
-				{	if(sqlRS.getString("emp_lname").length()!=0)
-						sqlName = sqlRS.getString("emp_lname") + ", " + sqlRS.getString("emp_fname") + " " + sqlRS.getString("emp_mname");
-					else
-						sqlName = sqlRS.getString("emp_fname") + " " + sqlRS.getString("emp_mname");
-					namename = sqlRS.getString("emp_fname");
-				}
-				else
-				{	if(sqlRS.getString("emp_lname").length()!=0)
-					{	sqlName = sqlRS.getString("emp_lname") + ", " + sqlRS.getString("emp_mname");
-						namename = sqlRS.getString("emp_lname");
-					}
-					else
-					{	sqlName = sqlRS.getString("emp_mname");
-						namename = sqlRS.getString("emp_mname");
-					}
-				}
-			}
-			else
-			{	if(sqlRS.getString("emp_fname").length()!=0)
-				{	if(sqlRS.getString("emp_lname").length()!=0)
-						sqlName = sqlRS.getString("emp_lname") + ", " + sqlRS.getString("emp_fname");
-					else
-						sqlName = sqlRS.getString("emp_fname");
-					namename = sqlRS.getString("emp_fname");
-				}
-				else
-				{	if(sqlRS.getString("emp_lname").length()!=0)
-					{	sqlName = sqlRS.getString("emp_lname");
-						namename = sqlRS.getString("emp_lname");
-					}
-					else
-						sqlName = "";
-				}
-			}
-		
+			sqlName = sqlRS.getString("emp_lname") + ", " + sqlRS.getString("emp_fname") + " " + sqlRS.getString("emp_mname");
+			insertsqlname = sqlRS.getString("emp_lname") + ", " + sqlRS.getString("emp_fname") + " " + sqlRS.getString("emp_mname").substring(0, 1) + ".";
 			lblWelcome = new JLabel ("         *  Hi, " + namename + "!  *");
 			lblWelcome.setFont(new Font("Arial Bold", Font.ITALIC,14));
 			lblWelcome.setForeground(Color.BLUE);
@@ -293,7 +257,7 @@ public class Employee extends JFrame implements ActionListener, MouseListener
 			stampTime = sqltimeFormat.format(new Date(System.currentTimeMillis()));
 			
 			sqlQuery = "UPDATE timelogs SET date_out = ?, time_out = ? WHERE date_in = ? AND time_in = ? AND emp_id = ?";
-			computerQuery = "INSERT INTO logoutpc(emp_id, logout_pc, date_out, time_out) VALUES (?,?,?,?)";
+			computerQuery = "INSERT INTO logoutpc(emp_id, logout_pc, date_out, time_out, emp_name) VALUES (?,?,?,?,?)";
 			try
 			{	/*--- FOR timelogs SQL TABLE ---*/
 				ps = dbConn.prepareStatement(sqlQuery);
@@ -305,14 +269,15 @@ public class Employee extends JFrame implements ActionListener, MouseListener
 				ps.executeUpdate();
 				/*--- End . FOR timelogs SQL TABLE ---*/
 				
-				/*--- FOR loginpc SQL TABLE ---*/
+				/*--- FOR logoutpc SQL TABLE ---*/
 				ps = dbConn.prepareStatement(computerQuery);
 				ps.setString(1, idnum);
 				ps.setString(2, hostname);
 				ps.setDate(3, java.sql.Date.valueOf(stampDate));
 				ps.setTime(4, new Time(sqltimeFormat.parse(stampTime).getTime()));
+				ps.setString(5, insertsqlname);
 				ps.executeUpdate();
-				/*--- FOR loginpc SQL TABLE ---*/
+				/*--- FOR logoutpc SQL TABLE ---*/
 				
 				tableModel.setValueAt(dateFormat.format(java.sql.Date.valueOf(stampDate)), 0, 3);
 				tableModel.setValueAt(timeFormat.format(new Time(sqltimeFormat.parse(stampTime).getTime())), 0, 4);
@@ -332,7 +297,7 @@ public class Employee extends JFrame implements ActionListener, MouseListener
 			stampTime = sqltimeFormat.format(new Date(System.currentTimeMillis()));
 			
 			sqlQuery = "INSERT INTO timelogs (emp_id, date_in, time_in, date_out, time_out) VALUES (?, ?, ?, '0000-00-00', '00:00:00.000000')";
-			computerQuery = "INSERT INTO loginpc(emp_id, login_pc, date_in, time_in) VALUES (?,?,?,?)";
+			computerQuery = "INSERT INTO loginpc(emp_id, login_pc, date_in, time_in, emp_name) VALUES (?,?,?,?,?)";
 			try
 			{	/*--- FOR timelogs SQL TABLE ---*/
 				ps = dbConn.prepareStatement(sqlQuery);
@@ -348,6 +313,7 @@ public class Employee extends JFrame implements ActionListener, MouseListener
 				ps.setString(2, hostname);
 				ps.setDate(3, java.sql.Date.valueOf(stampDate));
 				ps.setTime(4, new Time(sqltimeFormat.parse(stampTime).getTime()));
+				ps.setString(5, insertsqlname);
 				ps.executeUpdate();
 				/*--- FOR loginpc SQL TABLE ---*/
 				
