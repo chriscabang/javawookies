@@ -64,7 +64,7 @@ public class Admin extends JFrame implements ActionListener
 	TableColumnModel colmodelLogoutPC;
 	
 	Connection dbConn;
-	Statement sqlStmnt, fullnameStmnt;
+	Statement sqlStmnt;
 	String sqlQuery, fullnameQuery;
 	PreparedStatement ps;
 	ResultSet sqlRS, fullnameRS;
@@ -492,7 +492,6 @@ public class Admin extends JFrame implements ActionListener
 		
 		try
 		{	dbConn = DriverManager.getConnection("jdbc:mysql://localhost:3306/timetracker", "admin", "adminuser");
-			fullnameStmnt = dbConn.createStatement();
 			sqlStmnt = dbConn.createStatement();
 			sqlQuery = "SELECT * FROM loginpc WHERE login_pc = '" + hostname + "' ORDER BY date_in DESC, time_in DESC";
 			sqlRS = sqlStmnt.executeQuery(sqlQuery);
@@ -550,7 +549,6 @@ public class Admin extends JFrame implements ActionListener
 		
 		try
 		{	dbConn = DriverManager.getConnection("jdbc:mysql://localhost:3306/timetracker", "admin", "adminuser");
-			fullnameStmnt = dbConn.createStatement();
 			sqlStmnt = dbConn.createStatement();
 			sqlQuery = "SELECT * FROM logoutpc WHERE logout_pc = '" + hostname + "' ORDER BY date_out DESC, time_out DESC";
 			sqlRS = sqlStmnt.executeQuery(sqlQuery);
@@ -1057,15 +1055,3 @@ public class Admin extends JFrame implements ActionListener
 		}
 		Addemp();
 	}
-	
-	public static void main(String[] args)
-	{	Admin frame = new Admin();
-		
-		frame.pack();
-		frame.setLocationRelativeTo(null);
-		frame.setResizable(false);
-		frame.setVisible(true);
-		frame.setTitle("JavaWookies Time Tracking System");
-		
-	}
-}
