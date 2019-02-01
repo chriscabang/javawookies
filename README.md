@@ -165,11 +165,12 @@ Using this system, employers can keep track of the *Time-In/Time-Out (TITO)* of 
 
 33. If the build/compilation is successful or there are no errors, type in `JAVA`, press **Space**, type in **the file name of your Java source code MINUS the .java part**, and press **Enter** to run the program.
 
-If you do not encounter any error(s), Congratulations!
+If you do not encounter any issue(s), Congratulations!
 
 # Development and Release Dates
-**JavaWookies** started developing this *Time Tracking System* last *December 15, 2018*. However, at the time of this writing, we are still continuing its development, thus you may experience several bugs during testing and some features are not working. The application will be pre-released *on or before January 26, 2019*.
+**JavaWookies** started developing this *Time Tracking System* on *December 15, 2018*. The application, with an original release date of *January 26, 2019*, is now planned for a *February 2, 2019* beta release so we can improve its quality further.
 
 # Notes/Updates
-- "Login.java" can be found under "src" folder.
-- "Admin.java" is not yet linked to "Login.java".
+- "Login.java" and the rest of the .java files can be found in "src" folder.
+- "timetracker.sql" can be found in "bin" folder.
+- "mysql-connector-java-8.0.13.jar" can be found in "lib" folder.
