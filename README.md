@@ -7,7 +7,7 @@ This ***README*** file contains all the information about our project: a time tr
 - **Prerequisites**
 - **System Requirements**
 - **Setup Guide**
-- **Development and Release Dates**
+- **Development and Release**
 - **Notes/Updates**
 
 # About JavaWookies
@@ -167,7 +167,7 @@ Using this system, employers can keep track of the *Time-In/Time-Out (TITO)* of 
 
 If you do not encounter any issue(s), Congratulations!
 
-# Development and Release Dates
+# Development and Release
 **JavaWookies** started developing this *Time Tracking System* on *December 15, 2018*. The application, with an original release date of *January 26, 2019*, is now planned for a *February 2, 2019* closed beta release so we can improve its quality further.
 
 # Notes/Updates
