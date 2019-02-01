@@ -7,7 +7,7 @@ This ***README*** file contains all the information about our project: a time tr
 - **Prerequisites**
 - **System Requirements**
 - **Setup Guide**
-- **Development and Release Dates**
+- **Development and Release**
 - **Notes/Updates**
 
 # About JavaWookies
@@ -65,7 +65,7 @@ Using this system, employers can keep track of the *Time-In/Time-Out (TITO)* of 
 
 6. Download and install the [**Java SE Runtime Environment (JRE) 8**](https://download.oracle.com/otn-pub/java/jdk/8u201-b09/42970487e3af4f5aa5bca3f542482c60/jre-8u201-windows-x64.exe).
 
-7. **Press together** the [**WindowsLogo**]+[**PauseBreak**] **keys** to show the ***System*** **Information** window.
+7. Press together the **[WindowsLogo]**+**[PauseBreak]** keys to show the ***System*** **Information** window.
 
 ![7](https://github.com/chriscabang/javawookies/blob/master/doc/img/Windows_Key.png "7")
 
@@ -149,7 +149,7 @@ Using this system, employers can keep track of the *Time-In/Time-Out (TITO)* of 
 
 ![30](https://github.com/chriscabang/javawookies/blob/master/doc/img/ImportTimetrackerSQLtoPhpMyAdmin_12.png "30")
 
-31. Refer to **Steps 12 through 14** to open or run **Windows CMD** and make sure that Java is set up on your computer. Once confirmed, type in `CD`, press the **Space** key once, type in **the path to the folder/directory where your *\*.java* files are saved**, enclose the directory/path in double quotes ( **\"** ) as much as possible, and press **Enter**. If your *\*.java* files are saved in a different storage drive, follow this sample format `CD "anotherdrive:\path\to\dotjava\files\"`. See the example screenshots below for more details as well.
+31. Refer to **Steps 12 through 14** to make sure that Java is set up on your computer. Once confirmed, still within the **Windows CMD** window, type in `CD`, press the **Space** key once, type in **the path to the folder/directory where your *\*.java* files are saved**, enclose the directory/path in double quotes ( **\"** ) as much as possible, and press **Enter**. If your *\*.java* files are saved in a different storage drive, follow this sample format `CD "anotherdrive:\path\to\dotjava\files\"`. See the example screenshots below for more details as well.
 
 ![31](https://github.com/chriscabang/javawookies/blob/master/doc/img/CompileJavaFiles_01.png "31")
 
@@ -163,15 +163,14 @@ Using this system, employers can keep track of the *Time-In/Time-Out (TITO)* of 
 
     `C:\Users\yourUsername\Desktop\Javawookies\master\src>JAVAC Employee.java`
 
-33. If the build/compilation is successful or there are no errors, type in `JAVA`, press **Space**, type in **the file name of your Java source code MINUS the .java part**, and press **Enter** to run the program. Specifically, you must type in `JAVA Login` and press **Enter** since this file is the main entry point for the whole system. Refer to the example format below.
+33. If the build/compilation is successful or there are no errors, type in `JAVA`, press **Space**, type in **the file name of your Java source code MINUS the .java part**, and press **Enter** to run the program.
 
-    `C:\Users\yourUsername\Desktop\Javawookies\master\src>JAVA Login`
+If you do not encounter any issue(s), Congratulations!
 
-If you do not encounter any error(s), Congratulations!
-
-# Development and Release Dates
-**JavaWookies** started developing this *Time Tracking System* last *December 15, 2018*. However, at the time of this writing, we are still continuing its development, thus you may experience several bugs during testing and some features are not working. The application will be pre-released *on or before January 26, 2019*.
+# Development and Release
+**JavaWookies** started developing this *Time Tracking System* on *December 15, 2018*. The application, with an original release date of *January 26, 2019*, is now planned for a *February 2, 2019* closed beta release so we can improve its quality further.
 
 # Notes/Updates
-- "Login.java" can be found under "src" folder.
-- "Admin.java" is not yet linked to "Login.java".
+- "Login.java" and the rest of the .java files can be found in "src" folder.
+- "timetracker.sql" can be found in "bin" folder.
+- "mysql-connector-java-8.0.13.jar" can be found in "lib" folder.
