@@ -163,7 +163,9 @@ Using this system, employers can keep track of the *Time-In/Time-Out (TITO)* of 
 
     `C:\Users\yourUsername\Desktop\Javawookies\master\src>JAVAC Employee.java`
 
-33. If the build/compilation is successful or there are no errors, type in `JAVA`, press **Space**, type in **the file name of your Java source code MINUS the .java part**, and press **Enter** to run the program.
+33. If the build/compilation is successful or there are no errors, type in `JAVA`, press **Space**, type in **the file name of your Java source code MINUS the .java part**, and press **Enter** to run the program. Specifically, you must type in `JAVA Login` and press **Enter** since this file is the main entry point for the whole system. Refer to the example format below.
+
+    `C:\Users\yourUsername\Desktop\Javawookies\master\src>JAVA Login`
 
 If you do not encounter any error(s), Congratulations!
 
