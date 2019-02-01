@@ -47,7 +47,7 @@ Using this system, employers can keep track of the *Time-In/Time-Out (TITO)* of 
 
 # Setup Guide
 \*NOTE: This section requires an Internet connection.
-1. Log on to the Javawookies Remote/Web Repository in a new browser window without closing this specific guide/window. Hold the [Shift] key and left-click [here](https://www.github.com/chriscabang/javawookies).
+1. Log on to the Javawookies Remote/Web Repository in a new browser window without closing this specific guide/window. **Hold** the [**Shift**] **key** and **left-click** [**here**](https://www.github.com/chriscabang/javawookies).
 
 ![2](https://github.com/chriscabang/javawookies/blob/master/doc/img/GitHub_Javawookies_RepoWeb_CloneOrDownload.png "2")
 
