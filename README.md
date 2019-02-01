@@ -83,13 +83,13 @@ Using this system, employers can keep track of the *Time-In/Time-Out (TITO)* of 
 
 12. On your Windows computer, click **Start** > **Run**.
 
-13. Type in *cmd.exe* and press **Enter** or click **OK** to open the Windows Command-Line Interface.
+13. Type in *cmd.exe* and press **Enter** or click **OK** to open the **Windows Command-Line Interface (CMD)**.
 
 14. Type in *java -version* and press **Enter**.
 
 ![14](https://github.com/chriscabang/javawookies/blob/master/doc/img/JavaVersion_01.png "14")
 
-15. After doing so, the system should display the most recent versions of both Java Development Kit and Java Runtime Environment. Once confirmed, type in *exit* and press **Enter** to close the Windows Command-Line Interface.
+15. After doing so, the system should display the most recent versions of both Java JDK and JRE. Once confirmed, type in *exit* and press **Enter** to close the Windows Command-Line Interface.
 
 ![15](https://github.com/chriscabang/javawookies/blob/master/doc/img/JavaVersion_02.png "15")
 
@@ -148,6 +148,24 @@ Using this system, employers can keep track of the *Time-In/Time-Out (TITO)* of 
 30. On the **User accounts overview** page, *admin* and its associated host *localhost* should be on the list. Refer to the screenshot below.
 
 ![30](https://github.com/chriscabang/javawookies/blob/master/doc/img/ImportTimetrackerSQLtoPhpMyAdmin_12.png "30")
+
+31. Refer to **Steps 12 through 14** to make sure that Java is set up on your computer. Once confirmed, still within the **Windows CMD** window, type in `CD`, press the **Space** key once, type in **the path to the folder/directory where your *\*.java* files are saved**, enclose the directory/path in double quotes ( **\"** ) as much as possible, and press **Enter**. If your *\*.java* files are saved in a different storage drive, follow this sample format `CD "anotherdrive:\path\to\dotjava\files\"`. See the example screenshots below for more details as well.
+
+![31](https://github.com/chriscabang/javawookies/blob/master/doc/img/CompileJavaFiles_01.png "31")
+
+![31](https://github.com/chriscabang/javawookies/blob/master/doc/img/CompileJavaFiles_02.png "31")
+
+![31](https://github.com/chriscabang/javawookies/blob/master/doc/img/CompileJavaFiles_03.png "31")
+
+![31](https://github.com/chriscabang/javawookies/blob/master/doc/img/CompileJavaFiles_04.png "31")
+
+32. Type in `JAVAC`, press **Space**, type in **the full name of your Java source code file complete with the .java extension/filetype**, and press **Enter** to build/compile your Java source code into a system-generated **.class** file. Apply this same procedure to the rest of the accompanying .java files. Refer to the example format below.
+
+    `C:\Users\yourUsername\Desktop\Javawookies\master\src>JAVAC Employee.java`
+
+33. If the build/compilation is successful or there are no errors, type in `JAVA`, press **Space**, type in **the file name of your Java source code MINUS the .java part**, and press **Enter** to run the program.
+
+If you do not encounter any error(s), Congratulations!
 
 # Development and Release Dates
 **JavaWookies** started developing this *Time Tracking System* last *December 15, 2018*. However, at the time of this writing, we are still continuing its development, thus you may experience several bugs during testing and some features are not working. The application will be pre-released *on or before January 26, 2019*.
