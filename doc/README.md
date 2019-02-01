@@ -65,7 +65,7 @@ Using this system, employers can keep track of the *Time-In/Time-Out (TITO)* of 
 
 6. Download and install the [**Java SE Runtime Environment (JRE) 8**](https://download.oracle.com/otn-pub/java/jdk/8u201-b09/42970487e3af4f5aa5bca3f542482c60/jre-8u201-windows-x64.exe).
 
-7. Press together the **[WindowsLogo]**+**[PauseBreak]** keys to show the ***System*** **Information** window.
+7. **Press together** the [**WindowsLogo**]+[**PauseBreak**] **keys** to show the ***System*** **Information** window.
 
 ![7](https://github.com/chriscabang/javawookies/blob/master/doc/img/Windows_Key.png "7")
 
@@ -149,7 +149,7 @@ Using this system, employers can keep track of the *Time-In/Time-Out (TITO)* of 
 
 ![30](https://github.com/chriscabang/javawookies/blob/master/doc/img/ImportTimetrackerSQLtoPhpMyAdmin_12.png "30")
 
-31. Refer to **Steps 12 through 14** to make sure that Java is set up on your computer. Once confirmed, still within the **Windows CMD** window, type in `CD`, press the **Space** key once, type in **the path to the folder/directory where your *\*.java* files are saved**, enclose the directory/path in double quotes ( **\"** ) as much as possible, and press **Enter**. If your *\*.java* files are saved in a different storage drive, follow this sample format `CD "anotherdrive:\path\to\dotjava\files\"`. See the example screenshots below for more details as well.
+31. Refer to **Steps 12 through 14** to open or run **Windows CMD** and make sure that Java is set up on your computer. Once confirmed, type in `CD`, press the **Space** key once, type in **the path to the folder/directory where your *\*.java* files are saved**, enclose the directory/path in double quotes ( **\"** ) as much as possible, and press **Enter**. If your *\*.java* files are saved in a different storage drive, follow this sample format `CD "anotherdrive:\path\to\dotjava\files\"`. See the example screenshots below for more details as well.
 
 ![31](https://github.com/chriscabang/javawookies/blob/master/doc/img/CompileJavaFiles_01.png "31")
 
