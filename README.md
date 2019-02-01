@@ -137,13 +137,17 @@ Using this system, employers can keep track of the *Time-In/Time-Out (TITO)* of 
 
 ![27](https://github.com/chriscabang/javawookies/blob/master/doc/img/ImportTimetrackerSQLtoPhpMyAdmin_10.png "27")
 
-28. On the left-hand side where a list of databases is visible, make sure that *timetracker* is on the list. This confirms that the *timetracker* database is created successfully. You may also click *timetracker* to expand this database and view its tables. To check if the user account *admin* was created successfully, click the **User accounts** tab.
+28. On the left-hand side where a list of databases is visible, make sure that *timetracker* is on the list. This confirms that the *timetracker* database is created successfully. You may also click *timetracker* to expand this database and view its tables.
 
-![28](https://github.com/chriscabang/javawookies/blob/master/doc/img/ImportTimetrackerSQLtoPhpMyAdmin_11.png "28")
+![28](https://github.com/chriscabang/javawookies/blob/master/doc/img/ImportTimetrackerSQLtoPhpMyAdmin_07.png "28")
 
-29. On the **User accounts overview** page, *admin* and its associated host *localhost* should be on the list. Refer to the screenshot below.
+29. To check if the user account *admin* was created successfully, click the **User accounts** tab.
 
-![29](https://github.com/chriscabang/javawookies/blob/master/doc/img/ImportTimetrackerSQLtoPhpMyAdmin_12.png "29")
+![29](https://github.com/chriscabang/javawookies/blob/master/doc/img/ImportTimetrackerSQLtoPhpMyAdmin_11.png "29")
+
+30. On the **User accounts overview** page, *admin* and its associated host *localhost* should be on the list. Refer to the screenshot below.
+
+![30](https://github.com/chriscabang/javawookies/blob/master/doc/img/ImportTimetrackerSQLtoPhpMyAdmin_12.png "30")
 
 # Development and Release Dates
 **JavaWookies** started developing this *Time Tracking System* last *December 15, 2018*. However, at the time of this writing, we are still continuing its development, thus you may experience several bugs during testing and some features are not working. The application will be pre-released *on or before January 26, 2019*.
