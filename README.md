@@ -2,13 +2,24 @@
 This ***README*** file contains all the information about our project: a time tracking system that uses **Java SE** *(Standard Edition)* technology. In *this repository*, you will understand what this system is all about and you will also find the *instructions on how to get this application up and running on your local machine* for further development and/or testing.
 
 # Table of Contents
+- **About JavaWookies**
 - **Project Overview**
 - **Prerequisites**
 - **System Requirements**
 - **Setup Guide**
-- **Development and Release Dates**
+- **Development and Release**
 - **Notes/Updates**
-- **About JavaWookies**
+
+# About JavaWookies
+Our team consists of:
+
+**Member** | **Username**
+:--- | :---
+Benjie Fuentes | [benjiefuentes](https://github.com/benjiefuentes)
+JM Hortillosa | [jmhort](https://github.com/jmhort)
+Loebel Busis | [bellabelle](https://github.com/bellabelle)
+Edneil Quitara | [edneil224](https://github.com/edneil224)
+Juneil Gamallo | [gamalloneil](https://github.com/gamalloneil)
 
 # Project Overview
 
@@ -36,7 +47,7 @@ Using this system, employers can keep track of the *Time-In/Time-Out (TITO)* of 
 
 # Setup Guide
 \*NOTE: This section requires an Internet connection.
-1. Log on to the Javawookies Web Repository by holding the [Shift] key and left-clicking [here](https://www.github.com/chriscabang/javawookies).
+1. Log on to the Javawookies Remote/Web Repository in a new browser window without closing this specific guide/window. **Hold** the [**Shift**] **key** and **left-click** [**here**](https://www.github.com/chriscabang/javawookies).
 
 ![2](https://github.com/chriscabang/javawookies/blob/master/doc/img/GitHub_Javawookies_RepoWeb_CloneOrDownload.png "2")
 
@@ -50,9 +61,9 @@ Using this system, employers can keep track of the *Time-In/Time-Out (TITO)* of 
 
 ![4](https://github.com/chriscabang/javawookies/blob/master/doc/img/ExtractToLocalRepo.png "4")
 
-5. Download and install [**Java SE Development Kit 8**](https://download.oracle.com/otn-pub/java/jdk/8u201-b09/42970487e3af4f5aa5bca3f542482c60/jdk-8u201-windows-x64.exe), and follow the on-screen instructions. It is highly recommended that you leave the default values as they are during installation, and apply this same procedure to future installations.
+5. Download and install the [**Java SE Development Kit (JDK) 8**](https://download.oracle.com/otn-pub/java/jdk/8u201-b09/42970487e3af4f5aa5bca3f542482c60/jdk-8u201-windows-x64.exe), and follow the on-screen instructions. It is highly recommended that you leave the default values as they are during installation, and apply this same procedure to future installations.
 
-6. Download and install [**Java SE Runtime Environment 8**](https://download.oracle.com/otn-pub/java/jdk/8u201-b09/42970487e3af4f5aa5bca3f542482c60/jre-8u201-windows-x64.exe).
+6. Download and install the [**Java SE Runtime Environment (JRE) 8**](https://download.oracle.com/otn-pub/java/jdk/8u201-b09/42970487e3af4f5aa5bca3f542482c60/jre-8u201-windows-x64.exe).
 
 7. Press together the **[WindowsLogo]**+**[PauseBreak]** keys to show the ***System*** **Information** window.
 
@@ -72,13 +83,13 @@ Using this system, employers can keep track of the *Time-In/Time-Out (TITO)* of 
 
 12. On your Windows computer, click **Start** > **Run**.
 
-13. Type in *cmd.exe* and press **Enter** or click **OK** to open the Windows Command-Line Interface.
+13. Type in *cmd.exe* and press **Enter** or click **OK** to open the **Windows Command-Line Interface (CMD)**.
 
 14. Type in *java -version* and press **Enter**.
 
 ![14](https://github.com/chriscabang/javawookies/blob/master/doc/img/JavaVersion_01.png "14")
 
-15. After doing so, the system should display the most recent versions of both Java Development Kit and Java Runtime Environment. Once confirmed, type in *exit* and press **Enter** to close the Windows Command-Line Interface.
+15. After doing so, the system should display the most recent versions of both Java JDK and JRE. Once confirmed, type in *exit* and press **Enter** to close the Windows Command-Line Interface.
 
 ![15](https://github.com/chriscabang/javawookies/blob/master/doc/img/JavaVersion_02.png "15")
 
@@ -92,7 +103,7 @@ Using this system, employers can keep track of the *Time-In/Time-Out (TITO)* of 
 
 19. On the **Variable value:** text field, type in or copy-and-paste the directory/path to the folder where your *mysql-connector-java-8.0.13.jar* file is located, and click **OK**. Refer to the example below:
 
-    `C:\Users\Username\Desktop\Javawookies\master\mysql-connector-java-8.0.13.jar`
+    `C:\Users\Username\Desktop\Javawookies\master\lib\mysql-connector-java-8.0.13.jar`
 
 ![19](https://github.com/chriscabang/javawookies/blob/master/doc/img/CLASSPATH_02.png "19") ![19](https://github.com/chriscabang/javawookies/blob/master/doc/img/CLASSPATH_03.png "19")
 
@@ -102,48 +113,64 @@ Using this system, employers can keep track of the *Time-In/Time-Out (TITO)* of 
 
 ![21](https://github.com/chriscabang/javawookies/blob/master/doc/img/XAMPP_PhpMyAdmin.png "21")
 
-22. On the XAMPP Control Panel window, click the **Apache** server's **Start** button, and wait for it to update the *Status change detected:* to *running*.
+22. On the ***XAMPP*** **Control Panel** window, click the **Apache** server's **Start** button, and wait for it to update the *Status change detected:* to *running*.
 
 23. Click the **MySQL** server's **Start** button, and wait for it to update the *Status change detected:* to *running*.
 
 24. Click the **MySQL** server's **Admin** button, and your default browser will open in a new window to access **PhyMyAdmin**.
 
-![25](https://github.com/chriscabang/javawookies/blob/master/doc/img/PhpMyAdmin_01.png "25")
+![25](https://github.com/chriscabang/javawookies/blob/master/doc/img/PhpMyAdminHomeLandingPage.png "25")
 
-25. On the PhpMyAdmin landing page, click the **Databases** tab.
+25. On the ***PhpMyAdmin*** landing page, click the **Import** tab.
 
-26. On the **Database name** text field, type in the name of your database, and click the **Create** button. For this example, we are using the database name *timetracker* to be consistent with *timetracker.sql*.
+![25](https://github.com/chriscabang/javawookies/blob/master/doc/img/ImportTimetrackerSQLtoPhpMyAdmin_01.png "25")
 
-![26](https://github.com/chriscabang/javawookies/blob/master/doc/img/PhpMyAdmin_02.png "26")
+26. On the next page, click the **Choose File** button, locate the directory/folder where you extracted/saved *timetracker.sql*, click on that file, and click the **Open** button. Scroll down to the bottom of that same page, and click **Go**.
 
-27. After creating the database, click the **Import** tab to import the tables inside the *timetracker.sql* file that we downloaded and saved earlier **during Step 4**.
+![26](https://github.com/chriscabang/javawookies/blob/master/doc/img/ImportTimetrackerSQLtoPhpMyAdmin_02.png "26")
 
-![27](https://github.com/chriscabang/javawookies/blob/master/doc/img/PhpMyAdmin_03.png "27")
+![26](https://github.com/chriscabang/javawookies/blob/master/doc/img/ImportTimetrackerSQLtoPhpMyAdmin_03.png "26")
 
-28. On the next page, click the **Choose File** button, locate where you extracted/saved *timetracker.sql*, click on that file, and click the **Open** button. Scroll down to the bottom of that same page, and click **Go**.
+![26](https://github.com/chriscabang/javawookies/blob/master/doc/img/ImportTimetrackerSQLtoPhpMyAdmin_04.png "26")
 
-![28](https://github.com/chriscabang/javawookies/blob/master/doc/img/PhpMyAdmin_04.png "28")
+27. On the next page, **you should see a number of successful confirmations highlighted in green**, one of which states that the *Import has been successfully finished*. In addition, the user account associated with *timetracker.sql* and its corresponding password have been created for you.
 
-![28](https://github.com/chriscabang/javawookies/blob/master/doc/img/PhpMyAdmin_05.png "28")
+![27](https://github.com/chriscabang/javawookies/blob/master/doc/img/ImportTimetrackerSQLtoPhpMyAdmin_10.png "27")
 
-29. On the next page, **you should see a number of successful confirmations highlighted in green**, one of which states that the *Import has been successfully finished*.
+28. On the left-hand side where a list of databases is visible, make sure that *timetracker* is on the list. This confirms that the *timetracker* database is created successfully. You may also click *timetracker* to expand this database and view its tables.
 
-![29](https://github.com/chriscabang/javawookies/blob/master/doc/img/PhpMyAdmin_06.png "29")
+![28](https://github.com/chriscabang/javawookies/blob/master/doc/img/ImportTimetrackerSQLtoPhpMyAdmin_07.png "28")
 
-# Development and Release Dates
-**JavaWookies** started developing this *Time Tracking System* last *December 15, 2018*. However, at the time of this writing, we are still continuing its development, thus you may experience several bugs during testing and some features are not working. The application will be pre-released *on or before January 26, 2019*.
+29. To check if the user account *admin* was created successfully, click the **User accounts** tab.
+
+![29](https://github.com/chriscabang/javawookies/blob/master/doc/img/ImportTimetrackerSQLtoPhpMyAdmin_11.png "29")
+
+30. On the **User accounts overview** page, *admin* and its associated host *localhost* should be on the list. Refer to the screenshot below.
+
+![30](https://github.com/chriscabang/javawookies/blob/master/doc/img/ImportTimetrackerSQLtoPhpMyAdmin_12.png "30")
+
+31. Refer to **Steps 12 through 14** to make sure that Java is set up on your computer. Once confirmed, still within the **Windows CMD** window, type in `CD`, press the **Space** key once, type in **the path to the folder/directory where your *\*.java* files are saved**, enclose the directory/path in double quotes ( **\"** ) as much as possible, and press **Enter**. If your *\*.java* files are saved in a different storage drive, follow this sample format `CD "anotherdrive:\path\to\dotjava\files\"`. See the example screenshots below for more details as well.
+
+![31](https://github.com/chriscabang/javawookies/blob/master/doc/img/CompileJavaFiles_01.png "31")
+
+![31](https://github.com/chriscabang/javawookies/blob/master/doc/img/CompileJavaFiles_02.png "31")
+
+![31](https://github.com/chriscabang/javawookies/blob/master/doc/img/CompileJavaFiles_03.png "31")
+
+![31](https://github.com/chriscabang/javawookies/blob/master/doc/img/CompileJavaFiles_04.png "31")
+
+32. Type in `JAVAC`, press **Space**, type in **the full name of your Java source code file complete with the .java extension/filetype**, and press **Enter** to build/compile your Java source code into a system-generated **.class** file. Apply this same procedure to the rest of the accompanying .java files. Refer to the example format below.
+
+    `C:\Users\yourUsername\Desktop\Javawookies\master\src>JAVAC Employee.java`
+
+33. If the build/compilation is successful or there are no errors, type in `JAVA`, press **Space**, type in **the file name of your Java source code MINUS the .java part**, and press **Enter** to run the program.
+
+If you do not encounter any issue(s), Congratulations!
+
+# Development and Release
+**JavaWookies** started developing this *Time Tracking System* on **December 15, 2018**. The application, with an original release date of **January 26, 2019**, is now planned for a **February 2, 2019** closed beta release so we can improve the quality further.
 
 # Notes/Updates
-- "Login.java" can be found under "src" folder.
-- "Admin.java" is not yet linked to "Login.java".
-
-# About JavaWookies
-Our team consists of:
-
-**Member** | **Username**
-:--- | :---
-Benjie Fuentes | [benjiefuentes](https://github.com/benjiefuentes)
-JM Hortillosa | [jmhort](https://github.com/jmhort)
-Loebel Busis | [bellabelle](https://github.com/bellabelle)
-Edneil Quitara | [edneil224](https://github.com/edneil224)
-Juneil Gamallo | [gamalloneil](https://github.com/gamalloneil)
+- "Login.java" and the rest of the .java files can be found in "src" folder.
+- "timetracker.sql" can be found in "bin" folder.
+- "mysql-connector-java-8.0.13.jar" can be found in "lib" folder.
